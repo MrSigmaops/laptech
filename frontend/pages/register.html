@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAPTECH - Đăng Ký</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-top container">
+            <a href="../index.html" class="logo">LAPTECH</a>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+
+            <div class="header-actions">
+    <div class="action-item">
+        <i class="fa-regular fa-user"></i>
+        <span class="auth-links">
+            <a href="./register.html">ĐĂNG KÝ</a> | <a href="./login.html">ĐĂNG NHẬP</a>
+        </span>
+    </div>
+                <a href="#" class="action-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>GIỎ HÀNG</span>
+                </a>
+            </div>
+        </div>
+
+        <nav class="main-nav">
+            <ul class="container">
+                <li><a href="#">DANH MỤC</a></li>
+                <li><a href="#">LAPTOP</a></li>
+                <li><a href="#">PHỤ KIỆN</a></li>
+                <li><a href="#">ƯU ĐÃI</a></li>
+                <li><a href="#">HỖ TRỢ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="banner">
+            <img src="https://via.placeholder.com/1920x400/3b090b/fff?text=LAPTECH+REGISTRATION" alt="Banner Đăng Ký" style="width: 100%;">
+        </section>
+
+        <section class="auth-section">
+            <div class="auth-container register-container">
+                <h2 class="auth-title">ĐĂNG KÝ TÀI KHOẢN LAPTECH</h2>
+                
+                <div class="text-center mb-20">
+                    <i class="fa-brands fa-android fa-3x" style="color: var(--primary-red);"></i>
+                    <p class="mt-10" style="color: #666;">Đăng ký bằng tài khoản mạng xã hội</p>
+                </div>
+
+                <div class="social-login mb-30">
+                    <button class="btn-social btn-google">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"> Google
+                    </button>
+                    <button class="btn-social btn-facebook">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook"> Facebook
+                    </button>
+                </div>
+
+                <form id="register-form">
+                    <h3 class="form-section-title">Thông tin cá nhân</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Họ và tên</label>
+                            <input type="text" class="form-control" placeholder="Nhập họ và tên" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày sinh</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <input type="text" class="form-control" placeholder="Nhập số điện thoại" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email (không bắt buộc)</label>
+                            <input type="email" class="form-control" placeholder="Nhập email">
+                        </div>
+                    </div>
+
+                    <h3 class="form-section-title mt-20">Tạo mật khẩu</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
+                            <div class="password-input">
+                                <input type="password" class="form-control" id="reg-pwd" placeholder="Nhập mật khẩu của bạn" required>
+                                <i class="fa-regular fa-eye toggle-password" data-target="reg-pwd"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Nhập lại mật khẩu</label>
+                            <div class="password-input">
+                                <input type="password" class="form-control" id="reg-pwd-confirm" placeholder="Nhập lại mật khẩu của bạn" required>
+                                <i class="fa-regular fa-eye toggle-password" data-target="reg-pwd-confirm"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="password-hint">* Một mật khẩu tối thiểu 6 ký tự, có ít nhất 1 chữ cái và 1 số</p>
+
+                    <hr class="form-divider">
+
+                    <div class="form-actions">
+                        <a href="login.html" class="btn-outline">Quay lại đăng nhập</a>
+                        <button type="submit" class="btn-primary">Hoàn tất đăng ký</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col contact-info">
+                <div class="footer-logo">LAPTECH</div>
+                <ul>
+                    <li><i class="fa-solid fa-phone"></i> 0376.895.614 (chính)</li>
+                    <li><i class="fa-solid fa-phone"></i> 0436.395.614 (phụ)</li>
+                    <li><i class="fa-solid fa-envelope"></i> laptech123@gmail.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Đường Nghiêm Xuân Yêm, Phường Đại Kim, Quận Hoàng Mai, TP.Hà Nội</li>
+                    <li><i class="fa-regular fa-clock"></i> Thứ 2 - CN: 8h00-24h00</li>
+                </ul>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h3>DỊCH VỤ KHÁCH HÀNG</h3>
+                <ul>
+                    <li><a href="#">Điều khoản và điều kiện</a></li>
+                    <li><a href="#">Chính sách hoàn tiền</a></li>
+                    <li><a href="#">Chính sách giao hàng</a></li>
+                    <li><a href="#">Chính sách quyền riêng tư</a></li>
+                    <li><a href="#">Hướng dẫn mua hàng</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>CẨM NANG SỬ DỤNG</h3>
+                <ul>
+                    <li><a href="#">Sử dụng & bảo quản laptop</a></li>
+                    <li><a href="#">Mẹo chọn máy</a></li>
+                    <li><a href="#">Hướng dẫn nhận hàng & đổi trả</a></li>
+                    <li><a href="#">Hướng dẫn sử dụng laptop</a></li>
+                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>THÔNG TIN CHUNG</h3>
+                <ul>
+                    <li><a href="#">Tin về laptop</a></li>
+                    <li><a href="#">Quyền lợi thành viên</a></li>
+                    <li><a href="#">Ưu đãi khi đánh giá</a></li>
+                    <li><a href="#">Nhận quà tri ân</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Ý KIẾN ĐÓNG GÓP</h3>
+                <p class="feedback-text">Laptech luôn mong nhận được ý kiến đóng góp từ bạn để nâng cấp dịch vụ và sản phẩm tốt hơn.</p>
+                <p class="feedback-text">Nếu bạn có ý kiến, đừng ngần ngại đóng góp cho Laptech nhé.</p>
+                <p class="feedback-text">Laptech xin cảm ơn!</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/auth.js"></script>
+</body>
+</html>
