@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const productRoutes = require('./routes/productRoutes');
+const routes = require('./routes');
 
 const app = express();
 app.use(cors());
@@ -11,7 +11,7 @@ app.use(express.json());
 
 connectDB();
 
-app.use('/api/products', productRoutes);
+app.use('/api', routes);
 
 // Phục vụ file tĩnh frontend
 app.use(express.static(path.join(__dirname, '../frontend')));

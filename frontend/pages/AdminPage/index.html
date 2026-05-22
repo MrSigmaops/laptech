@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sản Phẩm - Admin</title>
+  <meta name="description" content="Trang quản lý sản phẩm LAPTECH của ban quản trị, hỗ trợ lọc và cập nhật danh mục laptop.">
+  <meta property="og:title" content="Sản Phẩm - Admin">
+  <meta property="og:description" content="Trang quản lý sản phẩm LAPTECH của ban quản trị, hỗ trợ lọc và cập nhật danh mục laptop.">
+  <link rel="stylesheet" href="./css/admin.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+  <!-- SIDEBAR -->
+  <div id="sidebar-placeholder" class="sidebar"></div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+
+      <h1>Sản Phẩm</h1>
+
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Tìm Kiếm">
+        <i class="fa-solid fa-gear"></i>
+      </div>
+
+      <div class="user">
+        👤 ADMIN ↩️
+      </div>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-wrapper">
+
+      <!-- MAIN CONTENT -->
+      <div class="content">
+
+        <div class="breadcrumb">
+          Sản Phẩm /
+        </div>
+
+        <!-- FILTER -->
+        <div class="filter-row">
+
+          <label>Bộ Lọc:</label>
+
+          <div class="filter-box">
+            ID ▼
+          </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <table>
+
+          <thead>
+            <tr>
+              <th>ID Sản Phẩm</th>
+              <th>Tên Sản Phẩm</th>
+              <th>Phân Loại</th>
+              <th>Số Lượng</th>
+              <th>Sản Phẩm Đã Bán</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td>SIJE_234235</td>
+              <td>Bông Tai Bạc</td>
+              <td>Bông Tai</td>
+              <td>23</td>
+              <td>5</td>
+
+              <td>
+                <span class="delete">🗑</span>
+                <span class="action">✏️</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>SIJE_234235</td>
+              <td>Bông Tai Bạc</td>
+              <td>Bông Tai</td>
+              <td>23</td>
+              <td>5</td>
+
+              <td>
+                <span class="delete">🗑</span>
+                <span class="action">✏️</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td>SIJE_234235</td>
+              <td>Bông Tai Bạc</td>
+              <td>Bông Tai</td>
+              <td>23</td>
+              <td>5</td>
+
+              <td>
+                <span class="delete">🗑</span>
+                <span class="action">✏️</span>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+        <!-- PAGINATION -->
+        <div class="pagination">
+
+          ←
+
+          <span class="active-page">1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+          <span>5</span>
+
+          →
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./js/sidebar.js"></script>
+</body>
+
+</html>

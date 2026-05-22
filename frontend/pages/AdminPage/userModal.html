@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Tài Khoản - Admin</title>
+    <meta name="description"
+        content="Trang chi tiết tài khoản, tạo mới hoặc chỉnh sửa thông tin người dùng hệ thống LAPTECH.">
+    <meta property="og:title" content="Quản Lý Tài Khoản - Admin">
+    <meta property="og:description"
+        content="Trang chi tiết tài khoản, tạo mới hoặc chỉnh sửa thông tin người dùng hệ thống LAPTECH.">
+    <link rel="stylesheet" href="./css/admin.css" />
+    <link rel="stylesheet" href="./css/userModal.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <div id="sidebar-placeholder" class="sidebar"></div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <h1 id="page-title">Chi Tiết Tài Khoản</h1>
+            <div class="search-box" style="visibility: hidden;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Tìm Kiếm">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+            <div class="user">
+                👤 ADMIN ↩️
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb" style="margin: 25px;">
+            <span class="back-icon" id="btn-back" title="Quay lại"><i class="fa-solid fa-chevron-left"></i></span>
+            <span id="breadcrumb-text">
+                Tài Khoản / Chi Tiết Tài Khoản
+            </span>
+        </div>
+
+        <!-- CARD -->
+        <div class="account-card"
+            style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 850px; margin-bottom: 50px;">
+
+            <!-- HEADER -->
+            <div class="account-header" style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <h2 id="header-fullname">Họ và Tên</h2>
+                    <p id="header-role">Vai trò</p>
+                    <small id="header-phone">Số điện thoại</small>
+                </div>
+            </div>
+
+            <!-- FORM CONTENT -->
+            <form id="user-form">
+                <div class="account-content">
+                    <!-- LEFT COLUMN -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label>Họ và Tên</label>
+                            <input type="text" id="user-fullname" placeholder="Nhập họ và tên" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Số Điện Thoại</label>
+                            <input type="text" id="user-phone" placeholder="Nhập số điện thoại" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Thư Điện Tử (Email)</label>
+                            <input type="email" id="user-email" placeholder="Nhập email (không bắt buộc)">
+                        </div>
+
+                        <div class="form-group" id="pwd-group">
+                            <label id="pwd-label">Mật Khẩu</label>
+                            <input type="password" id="user-password" placeholder="Mật khẩu tối thiểu 6 ký tự">
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label>Quyền Tài Khoản (Vai Trò)</label>
+                            <select id="user-role" required>
+                                <option value="CUSTOMER">Khách Hàng (CUSTOMER)</option>
+                                <option value="STAFF">Nhân Viên (STAFF)</option>
+                                <option value="MANAGER">Quản Lý (MANAGER)</option>
+                                <option value="STORAGE">Thủ Kho (STORAGE)</option>
+                                <option value="ACCOUNTING">Kế Toán (ACCOUNTING)</option>
+                                <option value="IT">Kỹ Thuật (IT)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tỉnh / Thành Phố</label>
+                            <select id="user-city" required>
+                                <option value="">-- Chọn Tỉnh / Thành phố --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Địa Chỉ Chi Tiết</label>
+                            <textarea id="user-address" placeholder="Nhập địa chỉ nhà cụ thể..." required></textarea>
+                        </div>
+
+                        <div class="form-group" id="status-group">
+                            <label>Trạng Thái Tài Khoản</label>
+                            <select id="user-status" required>
+                                <option value="active">Hoạt động (Active)</option>
+                                <option value="locked">Bị khóa (Locked)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOTER ACTIONS -->
+                <div class="delete-wrapper"
+                    style="gap: 15px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; justify-content: flex-end;">
+                    <button type="button" id="btn-cancel" class="delete-btn"
+                        style="background: #777; box-shadow: none;">Hủy bỏ</button>
+                    <button type="submit" id="btn-submit" class="delete-btn"
+                        style="background: #ff383c; box-shadow: none;">Lưu thông tin</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../utils/constants.js"></script>
+    <script src="./js/sidebar.js"></script>
+    <script src="./js/userModal.js"></script>
+</body>
+
+</html>

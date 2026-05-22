@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAPTECH - Đăng Nhập</title>
+    <meta name="description" content="Đăng nhập tài khoản hệ thống bán lẻ laptop LAPTECH để quản lý đơn hàng, xem khuyến mãi và trải nghiệm mua sắm công nghệ tốt nhất.">
+    <meta property="og:title" content="LAPTECH - Đăng Nhập">
+    <meta property="og:description" content="Đăng nhập tài khoản hệ thống bán lẻ laptop LAPTECH để quản lý đơn hàng, xem khuyến mãi và trải nghiệm mua sắm công nghệ tốt nhất.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../../style.css">
 </head>
+
 <body>
 
     <header class="main-header">
         <div class="header-top container">
-            <a href="../index.html" class="logo">LAPTECH</a>
-            
+            <a href="../../index.html" class="logo">LAPTECH</a>
+
             <div class="search-bar">
                 <input type="text" placeholder="Tìm kiếm sản phẩm...">
                 <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
 
             <div class="header-actions">
-    <div class="action-item">
-        <i class="fa-regular fa-user"></i>
-        <span class="auth-links">
-            <a href="./register.html">ĐĂNG KÝ</a> | <a href="./login.html">ĐĂNG NHẬP</a>
-        </span>
-    </div>
+                <div class="action-item">
+                    <i class="fa-regular fa-user"></i>
+                    <span class="auth-links">
+                        <a href="/pages/LoginPage/register.html">ĐĂNG KÝ</a>
+                        |
+                        <a href="/pages/LoginPage">ĐĂNG NHẬP</a>
+                    </span>
+                </div>
                 <a href="#" class="action-item">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>GIỎ HÀNG</span>
@@ -34,57 +41,46 @@
 
         <nav class="main-nav">
             <ul class="container">
-                <li><a href="#">DANH MỤC</a></li>
-                <li><a href="#">LAPTOP</a></li>
-                <li><a href="#">PHỤ KIỆN</a></li>
-                <li><a href="#">ƯU ĐÃI</a></li>
-                <li><a href="#">HỖ TRỢ</a></li>
+                <li><a href="../../index.html">DANH MỤC</a></li>
+                <li><a href="../../index.html">LAPTOP</a></li>
+                <li><a href="../../index.html">PHỤ KIỆN</a></li>
+                <li><a href="../../index.html">ƯU ĐÃI</a></li>
+                <li><a href="../../index.html">HỖ TRỢ</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <section class="banner">
-            <img src="https://via.placeholder.com/1920x400/3b090b/fff?text=LAPTECH+WELCOME" alt="Banner Đăng Nhập" style="width: 100%;">
+            <img src="https://via.placeholder.com/1920x400/3b090b/fff?text=LAPTECH+WELCOME" alt="Banner Đăng Nhập"
+                style="width: 100%;">
         </section>
 
         <section class="auth-section">
             <div class="auth-container">
                 <h2 class="auth-title">ĐĂNG NHẬP LAPTECH</h2>
-                
+
                 <form id="login-form">
                     <div class="form-group">
                         <label>Số điện thoại</label>
-                        <input type="text" class="form-control" placeholder="Nhập số điện thoại của bạn" required>
+                        <input type="text" id="login-phone" class="form-control" placeholder="Nhập số điện thoại của bạn" required>
                     </div>
 
                     <div class="form-group">
                         <label>Mật khẩu</label>
                         <div class="password-input">
-                            <input type="password" class="form-control" id="login-pwd" placeholder="Nhập mật khẩu của bạn" required>
+                            <input type="password" class="form-control" id="login-pwd"
+                                placeholder="Nhập mật khẩu của bạn" required>
                             <i class="fa-regular fa-eye toggle-password" data-target="login-pwd"></i>
                         </div>
                     </div>
 
                     <button type="submit" class="btn-primary btn-block">Đăng nhập</button>
-                    
+
                     <div class="text-center mt-15">
                         <a href="#" class="forgot-link">Quên mật khẩu?</a>
                     </div>
                 </form>
-
-                <div class="auth-divider">
-                    <span>Hoặc đăng nhập bằng</span>
-                </div>
-
-                <div class="social-login">
-                    <button class="btn-social btn-google">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"> Google
-                    </button>
-                    <button class="btn-social btn-facebook">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook"> Facebook
-                    </button>
-                </div>
 
                 <div class="auth-footer text-center">
                     Bạn chưa có tài khoản? <a href="register.html" class="register-link">Đăng ký ngay</a>
@@ -101,7 +97,8 @@
                     <li><i class="fa-solid fa-phone"></i> 0376.895.614 (chính)</li>
                     <li><i class="fa-solid fa-phone"></i> 0436.395.614 (phụ)</li>
                     <li><i class="fa-solid fa-envelope"></i> laptech123@gmail.com</li>
-                    <li><i class="fa-solid fa-location-dot"></i> Đường Nghiêm Xuân Yêm, Phường Đại Kim, Quận Hoàng Mai, TP.Hà Nội</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Đường Nghiêm Xuân Yêm, Phường Đại Kim, Quận Hoàng Mai,
+                        TP.Hà Nội</li>
                     <li><i class="fa-regular fa-clock"></i> Thứ 2 - CN: 8h00-24h00</li>
                 </ul>
                 <div class="social-icons">
@@ -147,13 +144,16 @@
 
             <div class="footer-col">
                 <h3>Ý KIẾN ĐÓNG GÓP</h3>
-                <p class="feedback-text">Laptech luôn mong nhận được ý kiến đóng góp từ bạn để nâng cấp dịch vụ và sản phẩm tốt hơn.</p>
+                <p class="feedback-text">Laptech luôn mong nhận được ý kiến đóng góp từ bạn để nâng cấp dịch vụ và sản
+                    phẩm tốt hơn.</p>
                 <p class="feedback-text">Nếu bạn có ý kiến, đừng ngần ngại đóng góp cho Laptech nhé.</p>
                 <p class="feedback-text">Laptech xin cảm ơn!</p>
             </div>
         </div>
     </footer>
 
-    <script src="../js/auth.js"></script>
+    <script src="../../utils/constants.js"></script>
+    <script src="../../js/auth.js"></script>
 </body>
+
 </html>
