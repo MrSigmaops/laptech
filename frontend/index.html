@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAPTECH - Trang chủ</title>
-    <meta name="description" content="LAPTECH - Cửa hàng bán lẻ laptop chính hãng uy tín hàng đầu, linh kiện điện tử giá tốt và chế độ hậu mãi tận tâm.">
+    <meta name="description"
+        content="LAPTECH - Cửa hàng bán lẻ laptop chính hãng uy tín hàng đầu, linh kiện điện tử giá tốt và chế độ hậu mãi tận tâm.">
     <meta property="og:title" content="LAPTECH - Trang chủ">
-    <meta property="og:description" content="LAPTECH - Cửa hàng bán lẻ laptop chính hãng uy tín hàng đầu, linh kiện điện tử giá tốt và chế độ hậu mãi tận tâm.">
+    <meta property="og:description"
+        content="LAPTECH - Cửa hàng bán lẻ laptop chính hãng uy tín hàng đầu, linh kiện điện tử giá tốt và chế độ hậu mãi tận tâm.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,18 +21,18 @@
             <a href="./index.html" class="logo">LAPTECH</a>
 
             <div class="search-bar">
-                <input type="text" placeholder="Tìm kiếm sản phẩm...">
-                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" id="home-search-input" placeholder="Tìm kiếm sản phẩm...">
+                <button type="button" id="home-search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
 
             <div class="header-actions">
                 <div class="action-item">
                     <i class="fa-regular fa-user"></i>
-                    <span class="auth-links">
+                    <span class="auth-links" id="home-auth-links">
                         <a href="/pages/LoginPage/register.html">ĐĂNG KÝ</a> | <a href="/pages/LoginPage">ĐĂNG NHẬP</a>
                     </span>
                 </div>
-                <a href="#" class="action-item">
+                <a href="#" class="action-item" id="home-cart-btn" style="display: none;">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>GIỎ HÀNG</span>
                 </a>
@@ -53,115 +55,40 @@
         <!-- FILTER SIDEBAR -->
         <div class="filter-sidebar">
 
-            <!-- DANH MỤC -->
-            <div class="filter-section">
-
-                <h2 class="filter-title">☰ Tất Cả Danh Mục</h2>
-
-                <ul class="filter-list">
-                    <li>▹ Máy Tính & Laptop</li>
-                    <li>Máy Tính Bàn</li>
-                    <li>Màn Hình</li>
-                    <li>Linh Kiện Máy Tính</li>
-                    <li>Thiết Bị Lưu Trữ</li>
-                    <li>Thiết Bị Mạng</li>
-                    <li>Khác</li>
-                </ul>
-
-            </div>
-
             <!-- BỘ LỌC -->
             <div class="filter-section">
 
-                <h2 class="filter-title">⏳ Bộ Lọc Tìm Kiếm</h2>
-
-                <!-- NƠI BÁN -->
-                <div class="filter-group">
-
-                    <p class="group-title">Nơi bán</p>
-
-                    <label><input type="checkbox"> Hà Nội</label>
-                    <label><input type="checkbox"> TP.Hồ Chí Minh</label>
-                    <label><input type="checkbox"> Thái Nguyên</label>
-                    <label><input type="checkbox"> Vĩnh Phúc</label>
-                    <label><input type="checkbox"> Nam Định</label>
-                    <label><input type="checkbox"> Hà Nam</label>
-
-                    <div class="more">Thêm ▾</div>
-
-                </div>
-
-                <!-- ĐƠN VỊ -->
-                <div class="filter-group">
-
-                    <p class="group-title">Đơn Vị Vận Chuyển</p>
-
-                    <label><input type="checkbox"> Nhanh</label>
-                    <label><input type="checkbox"> Tiết Kiệm</label>
-
-                </div>
+                <h2 class="filter-title">Bộ Lọc Tìm Kiếm</h2>
 
                 <!-- THƯƠNG HIỆU -->
-                <div class="filter-group">
-
+                <div class="filter-group" id="brand-filter-group">
                     <p class="group-title">Thương Hiệu</p>
-
-                    <label><input type="checkbox"> Dell</label>
-                    <label><input type="checkbox"> Lenovo</label>
-                    <label><input type="checkbox"> Acer</label>
-                    <label><input type="checkbox"> HP</label>
-                    <label><input type="checkbox"> Hewlett Packard HP</label>
-
-                    <div class="more">Thêm ▾</div>
-
+                    <label><input type="checkbox" class="brand-checkbox" value="HP"> HP</label>
+                    <label><input type="checkbox" class="brand-checkbox" value="Dell"> Dell</label>
+                    <label><input type="checkbox" class="brand-checkbox" value="Lenovo"> Lenovo</label>
+                    <label><input type="checkbox" class="brand-checkbox" value="ASUS"> ASUS</label>
+                    <label><input type="checkbox" class="brand-checkbox" value="Acer"> Acer</label>
+                    <label><input type="checkbox" class="brand-checkbox" value="MacBook"> MacBook</label>
                 </div>
-
-                <!-- KHOẢNG GIÁ -->
-                <div class="filter-group">
-
-                    <p class="group-title">Khoảng Giá</p>
-
-                    <div class="price-box">
-
-                        <input type="text" placeholder="đ TỪ">
-                        <input type="text" placeholder="đ ĐẾN">
-
-                    </div>
-
-                    <button class="apply-btn">
-                        ÁP DỤNG
-                    </button>
-
-                </div>
-
-                <!-- TÌNH TRẠNG -->
-                <div class="filter-group">
-
-                    <p class="group-title">Tình Trạng</p>
-
-                    <label><input type="checkbox"> Đã sử dụng</label>
-                    <label><input type="checkbox"> Mới</label>
-
-                </div>
-
-                <!-- DỊCH VỤ -->
-                <div class="filter-group">
-
-                    <p class="group-title">Dịch Vụ & Khuyến Mãi</p>
-
-                    <label><input type="checkbox"> Đang giảm giá</label>
-                    <label><input type="checkbox"> Hàng có sẵn</label>
-                    <label><input type="checkbox"> Mua giá bán buôn bán sỉ</label>
-                    <label><input type="checkbox"> Gì cũng rẻ</label>
-
-                </div>
-
-                <button class="clear-btn">
+                <button class="clear-btn" id="home-clear-btn">
                     XÓA TẤT CẢ
                 </button>
 
             </div>
 
+        </div>
+
+        <!-- CONTENT BODY WRAPPER -->
+        <div class="main-content-wrapper" style="flex: 1; display: flex; flex-direction: column;">
+            <!-- PRODUCT GRID -->
+            <div class="product-grid" id="homepage-product-grid">
+                <!-- Dữ liệu sản phẩm load động bằng main.js -->
+            </div>
+
+            <!-- PAGINATION -->
+            <div id="homepage-pagination" class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 30px; margin-bottom: 30px;">
+                <!-- Nút phân trang load động bằng JS -->
+            </div>
         </div>
 
     </main>

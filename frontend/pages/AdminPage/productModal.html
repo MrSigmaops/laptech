@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Sản Phẩm - Admin</title>
+    <meta name="description" content="Trang chi tiết sản phẩm, tạo mới hoặc chỉnh sửa thông tin sản phẩm hệ thống LAPTECH.">
+    <meta property="og:title" content="Quản Lý Sản Phẩm - Admin">
+    <meta property="og:description" content="Trang chi tiết sản phẩm, tạo mới hoặc chỉnh sửa thông tin sản phẩm hệ thống LAPTECH.">
+    <link rel="stylesheet" href="./css/admin.css" />
+    <link rel="stylesheet" href="./css/accountModal.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <div id="sidebar-placeholder" class="sidebar"></div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <h1 id="page-title">Chi Tiết Sản Phẩm</h1>
+            <div class="search-box" style="visibility: hidden;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text">
+            </div>
+            <div class="user">
+                👤 ADMIN
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb" style="margin: 25px;">
+            <span class="back-icon" id="btn-back" title="Quay lại"><i class="fa-solid fa-chevron-left"></i></span>
+            <span id="breadcrumb-text">
+                Sản Phẩm / Chi Tiết Sản Phẩm
+            </span>
+        </div>
+
+        <!-- CARD -->
+        <div class="account-card" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 850px; margin-bottom: 50px;">
+
+            <!-- HEADER -->
+            <div class="account-header" style="border-top-left-radius: 8px; border-top-right-radius: 8px; background: #1e3a8a;">
+                <div class="user-avatar">💻</div>
+                <div class="user-info">
+                    <h2 id="header-product-name" style="color: white; margin: 0; font-size: 20px;">Tên Sản Phẩm</h2>
+                    <p id="header-product-brand" style="color: rgba(255,255,255,0.8); margin: 4px 0 0 0; font-size: 14px;">Thương hiệu</p>
+                    <small id="header-product-price" style="color: rgba(255,255,255,0.7); display: block; margin-top: 4px; font-size: 12px;">Giá bán</small>
+                </div>
+            </div>
+
+            <!-- FORM CONTENT -->
+            <form id="product-form">
+                <div class="account-content">
+                    <!-- LEFT COLUMN -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label>Tên Sản Phẩm</label>
+                            <input type="text" id="product-name" placeholder="Nhập tên sản phẩm" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Thương Hiệu</label>
+                            <select id="product-brand" required>
+                                <option value="">-- Chọn Thương Hiệu --</option>
+                                <option value="HP">HP</option>
+                                <option value="Dell">Dell</option>
+                                <option value="Lenovo">Lenovo</option>
+                                <option value="ASUS">ASUS</option>
+                                <option value="Acer">Acer</option>
+                                <option value="MacBook">MacBook</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Giá Bán (VND)</label>
+                            <input type="number" id="product-price" placeholder="Nhập giá bán gốc" required min="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Đã Bán</label>
+                            <input type="number" id="product-sold" placeholder="Số lượng sản phẩm đã bán" min="0">
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label>Hình Ảnh Sản Phẩm</label>
+                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                                <input type="text" id="product-image-url" placeholder="Đường dẫn ảnh sản phẩm" required style="flex: 1;">
+                                <input type="file" id="product-image-file" accept="image/*" style="display: none;">
+                                <button type="button" id="btn-upload-trigger" style="background: #1e3a8a; color: white; border: none; padding: 10px 14px; border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-cloud-arrow-up"></i> Tải ảnh</button>
+                            </div>
+                            <div style="width: 100%; height: 180px; border: 1px dashed #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden; position: relative;">
+                                <img id="product-image-preview" src="" alt="Xem trước hình ảnh" style="max-width: 100%; max-height: 100%; display: none; object-fit: contain;">
+                                <span id="preview-placeholder" style="color: #999; font-size: 14px;">Xem trước hình ảnh</span>
+                                <div id="upload-status" style="position: absolute; bottom: 10px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: none;">Đang tải lên...</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mô Tả Sản Phẩm</label>
+                            <textarea id="product-description" placeholder="Nhập mô tả chi tiết sản phẩm..." style="height: 100px; resize: none;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOTER ACTIONS -->
+                <div class="delete-wrapper" style="gap: 15px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; justify-content: flex-end;">
+                    <button type="button" id="btn-cancel" class="delete-btn" style="background: #777; box-shadow: none;">Hủy bỏ</button>
+                    <button type="submit" id="btn-submit" class="delete-btn" style="background: #1e3a8a; box-shadow: none;">Lưu sản phẩm</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../utils/constants.js"></script>
+    <script src="./js/sidebar.js"></script>
+    <script src="./js/productModal.js"></script>
+</body>
+
+</html>

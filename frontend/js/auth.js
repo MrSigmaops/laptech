@@ -152,4 +152,58 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // 5. Cập nhật Header cho các trang Auth nếu người dùng đã đăng nhập trước đó
+    updateAuthPagesHeader();
 });
+
+function updateAuthPagesHeader() {
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+
+    const isRegisterPage = window.location.pathname.includes('register.html');
+    const authLinksId = isRegisterPage ? 'register-auth-links' : 'login-auth-links';
+    const cartBtnId = isRegisterPage ? 'register-cart-btn' : 'login-cart-btn';
+
+    const authLinks = document.getElementById(authLinksId);
+    const cartBtn = document.getElementById(cartBtnId);
+
+    if (token && userStr) {
+        const currentUser = JSON.parse(userStr);
+        let userDisplay = `<strong style="color: white;">${currentUser.fullName.toUpperCase()}</strong>`;
+
+        if (currentUser.role !== 'CUSTOMER') {
+            userDisplay += ` | <a href="/pages/AdminPage/product.html" style="font-weight: 600; color: white; text-decoration: none;">Quản trị</a>`;
+        }
+
+        userDisplay += ` | <a href="#" id="auth-logout-btn" style="color: #ff383c; text-decoration: none; margin-left: 6px;">Đăng xuất</a>`;
+
+        if (authLinks) {
+            authLinks.innerHTML = userDisplay;
+
+            const logoutBtn = document.getElementById('auth-logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (confirm('Bạn có chắc chắn muốn đăng xuất không?')) {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+
+        if (cartBtn) {
+            if (currentUser.role === 'CUSTOMER') {
+                cartBtn.style.display = 'flex';
+            } else {
+                cartBtn.style.display = 'none';
+            }
+        }
+    } else {
+        if (cartBtn) {
+            cartBtn.style.display = 'none';
+        }
+    }
+}

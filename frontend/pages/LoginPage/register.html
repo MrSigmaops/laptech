@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAPTECH - Đăng Ký</title>
-    <meta name="description" content="Đăng ký tài khoản LAPTECH để mua sắm laptop chính hãng, linh kiện cao cấp và nhận các dịch vụ hỗ trợ kĩ thuật tận tình.">
+    <meta name="description"
+        content="Đăng ký tài khoản LAPTECH để mua sắm laptop chính hãng, linh kiện cao cấp và nhận các dịch vụ hỗ trợ kĩ thuật tận tình.">
     <meta property="og:title" content="LAPTECH - Đăng Ký">
-    <meta property="og:description" content="Đăng ký tài khoản LAPTECH để mua sắm laptop chính hãng, linh kiện cao cấp và nhận các dịch vụ hỗ trợ kĩ thuật tận tình.">
+    <meta property="og:description"
+        content="Đăng ký tài khoản LAPTECH để mua sắm laptop chính hãng, linh kiện cao cấp và nhận các dịch vụ hỗ trợ kĩ thuật tận tình.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../style.css">
 </head>
@@ -26,12 +28,11 @@
             <div class="header-actions">
                 <div class="action-item">
                     <i class="fa-regular fa-user"></i>
-                    <span class="auth-links">
-                        <a href="/pages/LoginPage/register.html">ĐĂNG KÝ</a> | <a
-                            href="/pages/LoginPage/login.html">ĐĂNG NHẬP</a>
+                    <span class="auth-links" id="register-auth-links">
+                        <a href="/pages/LoginPage/register.html">ĐĂNG KÝ</a> | <a href="/pages/LoginPage">ĐĂNG NHẬP</a>
                     </span>
                 </div>
-                <a href="#" class="action-item">
+                <a href="#" class="action-item" id="register-cart-btn" style="display: none;">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>GIỎ HÀNG</span>
                 </a>
@@ -50,11 +51,6 @@
     </header>
 
     <main>
-        <section class="banner">
-            <img src="https://via.placeholder.com/1920x400/3b090b/fff?text=LAPTECH+REGISTRATION" alt="Banner Đăng Ký"
-                style="width: 100%;">
-        </section>
-
         <section class="auth-section">
             <div class="auth-container register-container">
                 <h2 class="auth-title">ĐĂNG KÝ TÀI KHOẢN LAPTECH</h2>
@@ -68,7 +64,8 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Họ và tên</label>
-                            <input type="text" id="reg-fullname" class="form-control" placeholder="Nhập họ và tên" required>
+                            <input type="text" id="reg-fullname" class="form-control" placeholder="Nhập họ và tên"
+                                required>
                         </div>
                         <div class="form-group">
                             <label>Email (không bắt buộc)</label>
@@ -78,7 +75,8 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Số điện thoại</label>
-                            <input type="text" id="reg-phone" class="form-control" placeholder="Nhập số điện thoại" required>
+                            <input type="text" id="reg-phone" class="form-control" placeholder="Nhập số điện thoại"
+                                required>
                         </div>
                         <div class="form-group">
                             <label>Tỉnh / Thành phố</label>
@@ -90,7 +88,8 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Địa chỉ chi tiết</label>
-                            <input type="text" id="reg-address" class="form-control" placeholder="Số nhà, tên đường, phường/xã..." required>
+                            <input type="text" id="reg-address" class="form-control"
+                                placeholder="Số nhà, tên đường, phường/xã..." required>
                         </div>
                     </div>
 

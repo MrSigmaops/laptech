@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAddUser = document.getElementById('btn-add-user');
     if (btnAddUser) {
         btnAddUser.addEventListener('click', () => {
-            window.location.href = 'userModal.html?action=create';
+            window.location.href = 'accountModal.html?action=create';
         });
     }
 
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             timeout = setTimeout(() => {
                 currentPage = 1;
                 fetchUsers(currentPage);
-            }, 300);
+            }, 500);
         });
     }
 });
@@ -178,11 +178,11 @@ function changePage(page) {
 
 // Các hàm toàn cục
 function viewUser(id) {
-    window.location.href = `userModal.html?action=view&id=${id}`;
+    window.location.href = `accountModal.html?action=view&id=${id}`;
 }
 
 function editUser(id) {
-    window.location.href = `userModal.html?action=edit&id=${id}`;
+    window.location.href = `accountModal.html?action=edit&id=${id}`;
 }
 
 async function deleteUserConfirm(id, name) {

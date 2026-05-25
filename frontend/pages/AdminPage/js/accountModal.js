@@ -1,4 +1,3 @@
-// File: frontend/pages/AdminPage/js/userModal.js
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Lấy tham số truy vấn từ URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -158,7 +157,7 @@ async function setupFormMode(action, userId, token) {
         userPassword.setAttribute('required', 'required');
         btnSubmit.innerText = 'Tạo tài khoản';
         btnSubmit.style.background = '#00b000'; // Xanh lá
-        
+
         headerFullName.innerText = 'Tài Khoản Mới';
         headerRole.innerText = 'Chọn Vai Trò bên dưới';
         headerPhone.innerText = 'Nhập số điện thoại bên dưới';
@@ -206,7 +205,7 @@ async function setupFormMode(action, userId, token) {
         if (action === 'view') {
             pageTitle.innerText = 'Chi Tiết Tài Khoản';
             breadcrumbText.innerText = 'Tài Khoản / Chi Tiết Tài Khoản';
-            
+
             // Ẩn trường mật khẩu
             if (pwdGroup) pwdGroup.style.display = 'none';
 

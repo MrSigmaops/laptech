@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAPTECH - Đăng Nhập</title>
-    <meta name="description" content="Đăng nhập tài khoản hệ thống bán lẻ laptop LAPTECH để quản lý đơn hàng, xem khuyến mãi và trải nghiệm mua sắm công nghệ tốt nhất.">
+    <meta name="description"
+        content="Đăng nhập tài khoản hệ thống bán lẻ laptop LAPTECH để quản lý đơn hàng, xem khuyến mãi và trải nghiệm mua sắm công nghệ tốt nhất.">
     <meta property="og:title" content="LAPTECH - Đăng Nhập">
-    <meta property="og:description" content="Đăng nhập tài khoản hệ thống bán lẻ laptop LAPTECH để quản lý đơn hàng, xem khuyến mãi và trải nghiệm mua sắm công nghệ tốt nhất.">
+    <meta property="og:description"
+        content="Đăng nhập tài khoản hệ thống bán lẻ laptop LAPTECH để quản lý đơn hàng, xem khuyến mãi và trải nghiệm mua sắm công nghệ tốt nhất.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../style.css">
 </head>
@@ -26,13 +28,13 @@
             <div class="header-actions">
                 <div class="action-item">
                     <i class="fa-regular fa-user"></i>
-                    <span class="auth-links">
+                    <span class="auth-links" id="login-auth-links">
                         <a href="/pages/LoginPage/register.html">ĐĂNG KÝ</a>
                         |
                         <a href="/pages/LoginPage">ĐĂNG NHẬP</a>
                     </span>
                 </div>
-                <a href="#" class="action-item">
+                <a href="#" class="action-item" id="login-cart-btn" style="display: none;">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>GIỎ HÀNG</span>
                 </a>
@@ -51,11 +53,6 @@
     </header>
 
     <main>
-        <section class="banner">
-            <img src="https://via.placeholder.com/1920x400/3b090b/fff?text=LAPTECH+WELCOME" alt="Banner Đăng Nhập"
-                style="width: 100%;">
-        </section>
-
         <section class="auth-section">
             <div class="auth-container">
                 <h2 class="auth-title">ĐĂNG NHẬP LAPTECH</h2>
@@ -63,7 +60,8 @@
                 <form id="login-form">
                     <div class="form-group">
                         <label>Số điện thoại</label>
-                        <input type="text" id="login-phone" class="form-control" placeholder="Nhập số điện thoại của bạn" required>
+                        <input type="text" id="login-phone" class="form-control"
+                            placeholder="Nhập số điện thoại của bạn" required>
                     </div>
 
                     <div class="form-group">

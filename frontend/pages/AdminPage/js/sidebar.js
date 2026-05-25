@@ -22,44 +22,56 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
     if (sidebarPlaceholder) {
         const path = window.location.pathname;
-        const isAccountPage = path.includes('account.html') || path.includes('userModal.html');
-        const isProductPage = path.includes('index.html') && !isAccountPage;
+        const isAccountPage = path.includes('account.html') || path.includes('accountModal.html');
+        const isProductPage = path.includes('product.html') || path.includes('productModal.html');
 
         let sidebarHTML = `
             <div class="logo">
                 <a href="../../index.html" style="color:white; text-decoration: none;">LAPTECH</a>
             </div>
 
-            <div class="menu-item">
-                <i class="fa-solid fa-house"></i> <a href="#">DashBoard</a>
-            </div>
+            <a href="../../index.html" style="color:white; text-decoration: none;"> 
+                <div class="menu-item">
+                    <i class="fa-solid fa-house"></i> DashBoard
+                </div>
+            </a>
 
-            <div class="menu-item ${isProductPage ? 'active' : ''}">
-                <i class="fa-solid fa-box"></i> <a href="index.html">Sản Phẩm</a>
-            </div>
+            <a href="product.html" style="color:white; text-decoration: none;">
+                <div class="menu-item ${isProductPage ? 'active' : ''}">
+                    <i class="fa-solid fa-box"></i> Sản Phẩm
+                </div>
+            </a>
 
-            <div class="menu-item">
-                <i class="fa-solid fa-cart-shopping"></i> <a href="#">Đơn Hàng</a>
-            </div>
+            <a href="#" style="color:white; text-decoration: none;">
+                <div class="menu-item">
+                    <i class="fa-solid fa-cart-shopping"></i> Đơn Hàng
+                </div>
+            </a>
 
-            <div class="menu-item">
-                <i class="fa-solid fa-gift"></i> <a href="#">Mã Giảm Giá</a>
-            </div>
+            <a href="#" style="color:white; text-decoration: none;">
+                <div class="menu-item">
+                    <i class="fa-solid fa-gift"></i> Mã Giảm Giá
+                </div>
+            </a>
         `;
 
         // CHỈ HIỂN THỊ mục Tài Khoản nếu role là IT
         if (currentUser.role === 'IT') {
             sidebarHTML += `
+            <a href="account.html" style="color:white; text-decoration: none;"> 
                 <div class="menu-item ${isAccountPage ? 'active' : ''}">
-                    <i class="fa-solid fa-user"></i> <a href="account.html">Tài Khoản</a>
+                    <i class="fa-solid fa-user"></i> Tài Khoản
                 </div>
+            </a>
             `;
         }
 
         sidebarHTML += `
-            <div class="menu-item">
-                <i class="fa-solid fa-user-plus"></i> <a href="#">Nhân Viên</a>
-            </div>
+            <a href="#" style="color:white; text-decoration: none;">
+                <div class="menu-item">
+                    <i class="fa-solid fa-user-plus"></i> Nhân Viên
+                </div>
+            </a>
         `;
 
         sidebarPlaceholder.innerHTML = sidebarHTML;
