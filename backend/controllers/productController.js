@@ -74,7 +74,7 @@ const getProductById = async (req, res) => {
 // 3. Thêm sản phẩm mới (chỉ Admin/Staff)
 const createProduct = async (req, res) => {
     try {
-        const { name, brand, description, basePrice, totalSale, imageUrl } = req.body;
+        const { name, brand, description, basePrice, totalSale, quantity, imageUrl } = req.body;
 
         if (!name || !brand || !basePrice || !imageUrl) {
             return res.status(400).json({ message: 'Vui lòng điền đầy đủ: Tên, Thương hiệu, Giá gốc, Hình ảnh!' });
@@ -92,6 +92,7 @@ const createProduct = async (req, res) => {
             description,
             basePrice: Number(basePrice),
             totalSale: Number(totalSale) || 0,
+            quantity: Number(quantity) || 0,
             imageUrl
         });
 
@@ -106,7 +107,7 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, brand, description, basePrice, totalSale, imageUrl } = req.body;
+        const { name, brand, description, basePrice, totalSale, quantity, imageUrl } = req.body;
 
         const product = await Product.findById(id);
         if (!product) {
@@ -126,6 +127,7 @@ const updateProduct = async (req, res) => {
         if (description !== undefined) product.description = description;
         if (basePrice !== undefined) product.basePrice = Number(basePrice);
         if (totalSale !== undefined) product.totalSale = Number(totalSale);
+        if (quantity !== undefined) product.quantity = Number(quantity);
         if (imageUrl !== undefined) product.imageUrl = imageUrl;
 
         const updatedProduct = await product.save();

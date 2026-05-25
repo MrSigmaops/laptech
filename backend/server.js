@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const routes = require('./routes');
+const seedProducts = require('./seedProducts');
+const seedUsers = require('./seed');
 
 const app = express();
 app.use(cors());
@@ -12,6 +14,8 @@ app.use(express.json());
 connectDB();
 
 app.use('/api', routes);
+seedProducts();
+seedUsers();
 
 // Phục vụ file tĩnh frontend
 app.use(express.static(path.join(__dirname, '../frontend')));

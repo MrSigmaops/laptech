@@ -2,23 +2,26 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAPTECH - Trang chủ</title>
-    <meta name="description"
-        content="LAPTECH - Cửa hàng bán lẻ laptop chính hãng uy tín hàng đầu, linh kiện điện tử giá tốt và chế độ hậu mãi tận tâm.">
-    <meta property="og:title" content="LAPTECH - Trang chủ">
-    <meta property="og:description"
-        content="LAPTECH - Cửa hàng bán lẻ laptop chính hãng uy tín hàng đầu, linh kiện điện tử giá tốt và chế độ hậu mãi tận tâm.">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lịch sử mua hàng - LAPTECH</title>
+    <meta name="description" content="Xem lịch sử đặt hàng, trạng thái xử lý đơn hàng và chi tiết sản phẩm đã mua tại LAPTECH.">
+    <meta property="og:title" content="Lịch sử mua hàng - LAPTECH">
+    <meta property="og:description" content="Xem lịch sử đặt hàng, trạng thái xử lý đơn hàng và chi tiết sản phẩm đã mua tại LAPTECH.">
+    
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="orderHistory.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
+    <!-- HEADER -->
     <header class="main-header">
         <div class="header-top container">
-            <a href="./index.html" class="logo">LAPTECH</a>
+            <a href="/index.html" class="logo">LAPTECH</a>
 
             <div class="search-bar">
                 <input type="text" id="home-search-input" placeholder="Tìm kiếm sản phẩm...">
@@ -41,56 +44,32 @@
 
         <nav class="main-nav">
             <ul class="container">
-                <li><a href="#">DANH MỤC</a></li>
-                <li><a href="#">LAPTOP</a></li>
-                <li><a href="#">PHỤ KIỆN</a></li>
-                <li><a href="#">ƯU ĐÃI</a></li>
-                <li><a href="#">HỖ TRỢ</a></li>
+                <li><a href="/index.html">DANH MỤC</a></li>
+                <li><a href="/index.html">LAPTOP</a></li>
+                <li><a href="/index.html">PHỤ KIỆN</a></li>
+                <li><a href="/index.html">ƯU ĐÃI</a></li>
+                <li><a href="/index.html">HỖ TRỢ</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="main-container">
+    <!-- BREADCRUMB -->
+    <section class="breadcrumb">
+        <i class="fa-solid fa-house"></i>
+        <span>Trang chủ > Lịch sử mua hàng</span>
+    </section>
 
-        <!-- FILTER SIDEBAR -->
-        <div class="filter-sidebar">
+    <!-- CONTAINER -->
+    <main class="history-container">
+        <h2>Lịch Sử Mua Hàng Của Bạn</h2>
 
-            <!-- BỘ LỌC -->
-            <div class="filter-section">
-
-                <h2 class="filter-title">Bộ Lọc Tìm Kiếm</h2>
-
-                <!-- THƯƠNG HIỆU -->
-                <div class="filter-group" id="brand-filter-group">
-                    <p class="group-title">Thương Hiệu</p>
-                    <label><input type="checkbox" class="brand-checkbox" value="HP"> HP</label>
-                    <label><input type="checkbox" class="brand-checkbox" value="Dell"> Dell</label>
-                    <label><input type="checkbox" class="brand-checkbox" value="Lenovo"> Lenovo</label>
-                    <label><input type="checkbox" class="brand-checkbox" value="ASUS"> ASUS</label>
-                    <label><input type="checkbox" class="brand-checkbox" value="Acer"> Acer</label>
-                    <label><input type="checkbox" class="brand-checkbox" value="MacBook"> MacBook</label>
-                </div>
-                <button class="clear-btn" id="home-clear-btn">
-                    XÓA TẤT CẢ
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- CONTENT BODY WRAPPER -->
-        <div class="main-content-wrapper" style="flex: 1; display: flex; flex-direction: column;">
-            <!-- PRODUCT GRID -->
-            <div class="product-grid" id="homepage-product-grid">
-                <!-- Dữ liệu sản phẩm load động bằng main.js -->
-            </div>
-
-            <!-- PAGINATION -->
-            <div id="homepage-pagination" class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 30px; margin-bottom: 30px;">
-                <!-- Nút phân trang load động bằng JS -->
+        <div id="orders-list-container">
+            <!-- Tải động bằng JS -->
+            <div style="text-align: center; padding: 50px;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; color: #1e3a8a; margin-bottom: 15px;"></i>
+                <p>Đang tải lịch sử đơn hàng của bạn...</p>
             </div>
         </div>
-
     </main>
 
     <footer class="main-footer">
@@ -156,7 +135,9 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <!-- Scripts -->
+    <script src="../../js/auth.js"></script>
+    <script src="orderHistory.js"></script>
 </body>
 
 </html>

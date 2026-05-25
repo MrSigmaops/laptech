@@ -40,8 +40,8 @@ const seedUsers = async () => {
 
       // 1. Tạo 1 Tài khoản IT (để vào xem được danh sách Tài khoản trong Sidebar)
       usersToCreate.push({
-        phoneNumber: '0901234567',
-        email: 'it_admin@laptech.vn',
+        phoneNumber: '0333333333',
+        email: 'admin@gmail.com',
         password: defaultHashedPassword,
         fullName: 'Nguyễn IT Admin',
         city: 'Hà Nội',
@@ -87,13 +87,9 @@ const seedUsers = async () => {
 
       await User.insertMany(usersToCreate);
     }
-
   } catch (error) {
     console.error('Lỗi khi seed dữ liệu:', error);
-  } finally {
-    await mongoose.disconnect();
-    console.log('Đã ngắt kết nối database.');
   }
 };
 
-seedUsers();
+module.exports = seedUsers;

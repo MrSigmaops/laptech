@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const path = window.location.pathname;
         const isAccountPage = path.includes('account.html') || path.includes('accountModal.html');
         const isProductPage = path.includes('product.html') || path.includes('productModal.html');
+        const isOrderPage = path.includes('order.html') || path.includes('orderModal.html');
 
         let sidebarHTML = `
             <div class="logo">
@@ -42,8 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </a>
 
-            <a href="#" style="color:white; text-decoration: none;">
-                <div class="menu-item">
+            <a href="order.html" style="color:white; text-decoration: none;">
+                <div class="menu-item ${isOrderPage ? 'active' : ''}">
                     <i class="fa-solid fa-cart-shopping"></i> Đơn Hàng
                 </div>
             </a>

@@ -81,8 +81,8 @@ ul {
 }
 
 .logo {
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight: 700;
     letter-spacing: 2px;
 }
 
@@ -729,8 +729,10 @@ ul {
     color: #ffffff;
 }
 
-.register-link {
+.register-link,
+.forgot-link {
     color: #8c1e21;
+    cursor: pointer;
 }
 
 /* CONTENT WRAPPER */
@@ -863,8 +865,10 @@ body {
 }
 
 .logo {
-    font-family: 'Russo One', sans-serif;
     font-size: 24px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 1px;
 }
 
 .nav {

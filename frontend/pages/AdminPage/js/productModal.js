@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const name = document.getElementById('product-name').value.trim();
             const brand = document.getElementById('product-brand').value;
             const basePrice = document.getElementById('product-price').value;
-            const totalSale = document.getElementById('product-sold').value || 0;
+            const quantity = document.getElementById('product-quantity').value || 0;
             const imageUrl = document.getElementById('product-image-url').value.trim();
             const description = document.getElementById('product-description').value.trim();
 
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 name,
                 brand,
                 basePrice: Number(basePrice),
-                totalSale: Number(totalSale),
+                quantity: Number(quantity),
                 imageUrl,
                 description
             };
@@ -239,7 +239,7 @@ async function setupProductFormMode(action, productId, token) {
         document.getElementById('product-name').value = product.name || '';
         document.getElementById('product-brand').value = product.brand || '';
         document.getElementById('product-price').value = product.basePrice || 0;
-        document.getElementById('product-sold').value = product.totalSale || 0;
+        document.getElementById('product-quantity').value = product.quantity || 0;
         document.getElementById('product-image-url').value = product.imageUrl || '';
         document.getElementById('product-description').value = product.description || '';
 

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản Lý Đơn Hàng - Admin</title>
+    <meta name="description" content="Trang quản trị duyệt đơn hàng, xác nhận thông tin giao hàng và cập nhật trạng thái đơn hàng của LAPTECH.">
+    <meta property="og:title" content="Quản Lý Đơn Hàng - Admin">
+    <link rel="stylesheet" href="./css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+        .status-pending { background-color: #fef3c7; color: #d97706; }
+        .status-confirmed { background-color: #dcfce7; color: #15803d; }
+        .status-canceled { background-color: #fee2e2; color: #b91c1c; }
+
+        /* Modal Details Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background-color: #f8fafc;
+            margin: 8% auto;
+            padding: 0;
+            border-radius: 8px;
+            width: 700px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        .modal-header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 { margin: 0; }
+        .close-btn { color: white; font-size: 24px; cursor: pointer; border: none; background: none; }
+        .modal-body { padding: 20px; }
+        .modal-footer {
+            padding: 15px 20px;
+            background-color: #f1f5f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <div id="sidebar-placeholder" class="sidebar"></div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <h1>Quản Lý Đơn Hàng</h1>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Tìm tên/SĐT người nhận...">
+            </div>
+            <div class="user">
+                👤 ADMIN
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="breadcrumb">
+                    Đơn Hàng / Danh sách
+                </div>
+
+                <!-- FILTER ROW -->
+                <div class="filter-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label>Trạng thái đơn hàng:</label>
+                        <select id="filter-status" style="padding: 6px 12px; border-radius: 4px; border: 1px solid #ddd; background: #fff; font-size: 14px; cursor: pointer;">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="PENDING">Chờ duyệt (PENDING)</option>
+                            <option value="CONFIRMED">Đã duyệt (CONFIRMED)</option>
+                            <option value="CANCELED">Đã hủy (CANCELED)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- TABLE -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px 15px; text-align: left;">Mã Đơn</th>
+                            <th style="padding: 12px 15px; text-align: left;">Khách Hàng</th>
+                            <th style="padding: 12px 15px; text-align: left;">Người Nhận</th>
+                            <th style="padding: 12px 15px; text-align: left;">Giá Trị</th>
+                            <th style="padding: 12px 15px; text-align: left;">Ngày Đặt</th>
+                            <th style="padding: 12px 15px; text-align: left;">Trạng Thái</th>
+                            <th style="padding: 12px 15px; text-align: left;">Người Duyệt</th>
+                            <th style="padding: 12px 15px; text-align: center; width: 150px;">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-table-body">
+                        <!-- Tải động bằng JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER DETAIL MODAL -->
+    <div id="order-detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-order-id">Chi Tiết Đơn Hàng</h3>
+                <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; font-size: 14px;">
+                    <div>
+                        <p><strong>Người nhận:</strong> <span id="detail-receiver-name"></span></p>
+                        <p><strong>Số điện thoại:</strong> <span id="detail-receiver-phone"></span></p>
+                        <p><strong>Thành phố:</strong> <span id="detail-city"></span></p>
+                        <p><strong>Địa chỉ chi tiết:</strong> <span id="detail-address"></span></p>
+                    </div>
+                    <div>
+                        <p><strong>Thanh toán:</strong> <span id="detail-payment-method"></span></p>
+                        <p><strong>Ghi chú:</strong> <span id="detail-note"></span></p>
+                        <p><strong>Tổng tiền hàng:</strong> <span id="detail-subtotal"></span></p>
+                        <p><strong>Thực trả:</strong> <span id="detail-total-price" style="font-weight: 700; color: #dc2626;"></span></p>
+                    </div>
+                </div>
+
+                <h4 style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Mặt Hàng Đã Đặt</h4>
+                <div id="detail-products-list" style="max-height: 200px; overflow-y: auto;">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeOrderModal()" style="padding: 8px 16px; border: 1px solid #ccc; background: white; border-radius: 4px; cursor: pointer; font-weight: 600;">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../utils/constants.js"></script>
+    <script src="./js/sidebar.js"></script>
+    <script src="./js/order.js"></script>
+</body>
+
+</html>

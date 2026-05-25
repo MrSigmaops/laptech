@@ -65,6 +65,14 @@ const userSchema = new mongoose.Schema({
       message: 'Vai trò không hợp lệ'
     },
     default: 'CUSTOMER'
+  },
+  otpCode: {
+    type: String,
+    default: null
+  },
+  otpExpires: {
+    type: Date,
+    default: null
   }
 }, {
   timestamps: true

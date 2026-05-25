@@ -62,7 +62,7 @@ const register = async (req, res) => {
     });
 
     const savedUser = await newUser.save();
-    
+
     // Tạo token và loại bỏ password trước khi phản hồi
     const token = generateToken(savedUser);
     const userResponse = savedUser.toObject();
@@ -289,7 +289,7 @@ const getUsers = async (req, res) => {
 
     // Xây dựng câu truy vấn dựa trên bộ lọc tìm kiếm và vai trò
     let query = {};
-    
+
     if (search) {
       query.$or = [
         { fullName: { $regex: search, $options: 'i' } },
@@ -297,7 +297,7 @@ const getUsers = async (req, res) => {
         { email: { $regex: search, $options: 'i' } }
       ];
     }
-    
+
     if (role) {
       query.role = role;
     }
@@ -336,11 +336,51 @@ const getUserById = async (req, res) => {
   }
 };
 
+const updateMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+    }
+
+    const { fullName, city, address, email } = req.body;
+
+    if (fullName) {
+      user.fullName = fullName;
+    }
+
+    if (city) {
+      user.city = city;
+    }
+
+    if (address) {
+      user.address = address;
+    }
+
+    if (email) {
+      user.email = email;
+    }
+
+    const updatedUser = await user.save();
+
+    const userResponse = updatedUser.toObject();
+    delete userResponse.password;
+
+    res.status(200).json({
+      message: 'Cập nhật thông tin thành công',
+      user: userResponse
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi hệ thống khi cập nhật thông tin', error: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
   createUser,
   updateUser,
+  updateMe,
   deleteUser,
   getUsers,
   getUserById

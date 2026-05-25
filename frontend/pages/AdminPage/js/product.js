@@ -117,7 +117,7 @@ function renderProductTable(products) {
                 <td style="font-weight: 600; padding: 12px 15px;">${product.name}</td>
                 <td style="padding: 12px 15px;"><span style="background-color: #e5f5ff; color: #0076ff; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 12px;">${product.brand}</span></td>
                 <td style="padding: 12px 15px; font-weight: 600; color: #1e3a8a;">${formattedPrice}</td>
-                <td style="padding: 12px 15px;">${product.totalSale}</td>
+                <td style="padding: 12px 15px;">${product.quantity}</td>
                 <td style="padding: 12px 15px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${product.description || ''}">${shortDesc}</td>
                 <td style="padding: 12px 15px;">
                     <div style="display: flex; justify-content: center; align-items: center; gap: 12px;">

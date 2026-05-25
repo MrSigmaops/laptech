@@ -59,7 +59,7 @@ function updateHomeHeader() {
 
     if (token && userStr) {
         const currentUser = JSON.parse(userStr);
-        let userDisplay = `<strong style="color: white;">${currentUser.fullName.toUpperCase()}</strong>`;
+        let userDisplay = `<a href="/pages/UserPage/index.html" style="color: white; text-decoration: none; margin-left: 6px;"><strong style="color: white;">${currentUser.fullName.toUpperCase()}</strong></a>`;
 
         // Nếu role khác CUSTOMER thì cho phép truy cập trang quản trị
         if (currentUser.role !== 'CUSTOMER') {
@@ -88,6 +88,13 @@ function updateHomeHeader() {
         if (cartBtn) {
             if (currentUser.role === 'CUSTOMER') {
                 cartBtn.style.display = 'flex';
+                // Thêm mục Lịch Sử Mua Hàng vào navbar
+                const navUl = document.querySelector('.main-nav ul');
+                if (navUl && !navUl.querySelector('a[href*="OrderHistory"]')) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="/pages/OrderHistory/index.html" style="color: white; font-weight: 700;">LỊCH SỬ MUA HÀNG</a>`;
+                    navUl.appendChild(li);
+                }
             } else {
                 cartBtn.style.display = 'none';
             }
