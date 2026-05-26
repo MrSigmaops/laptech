@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mã Giảm Giá - Laptech</title>
+        <link rel="stylesheet" href="./css/admin.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+        <style>
+            /* CSS DÀNH RIÊNG CHO TRANG MÃ GIẢM GIÁ */
+            .coupon-table {
+                width: 100%;
+                border-collapse: collapse;
+                background: white;
+                text-align: center;
+                font-size: 13px;
+            }
+
+            .coupon-table th {
+                background: #1e3a8a;
+                color: white;
+                padding: 12px;
+                font-weight: 600;
+            }
+
+            .coupon-table td {
+                padding: 12px;
+                border-bottom: 1px solid #f1f5f9;
+                color: #334155;
+            }
+
+            .coupon-table tr:nth-child(even) {
+                background-color: #f8fafc;
+            }
+
+            .status-active {
+                color: #22c55e;
+                font-weight: 600;
+            }
+
+            .status-inactive {
+                color: #ef4444;
+                font-weight: 600;
+            }
+
+            .status-ended {
+                color: #94a3b8;
+                font-weight: 600;
+            }
+
+            .action-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                margin: 0 5px;
+            }
+
+            .btn-edit {
+                color: #3b82f6;
+            }
+
+            .btn-delete {
+                color: #ef4444;
+            }
+
+            .add-form-container {
+                background: #f1f5f9;
+                padding: 20px;
+                border-radius: 8px;
+                margin-top: 20px;
+            }
+
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-group label {
+                font-size: 12px;
+                color: #64748b;
+                margin-bottom: 5px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 8px 12px;
+                border: 1px solid #cbd5e1;
+                border-radius: 4px;
+                outline: none;
+                font-size: 13px;
+                background: white;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .add-btn {
+                background: white;
+                color: #1e3a8a;
+                border: 1px solid #1e3a8a;
+                padding: 8px 20px;
+                font-weight: 600;
+                border-radius: 4px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                float: right;
+            }
+
+            .add-btn:hover {
+                background: #1e3a8a;
+                color: white;
+            }
+
+            #view-detail {
+                display: none;
+            }
+
+            .detail-header {
+                background: #1e3a8a;
+                color: white;
+                padding: 30px;
+                border-radius: 8px 8px 0 0;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                position: relative;
+            }
+
+            .detail-icon {
+                width: 60px;
+                height: 60px;
+                background: #2dd4bf;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 24px;
+                color: white;
+            }
+
+            .detail-grid {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 0;
+            }
+
+            /* Modal Xác Nhận Xóa */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.4);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .delete-modal {
+                background: #1e3a8a;
+                color: white;
+                width: 500px;
+                border-radius: 8px;
+                padding: 30px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            .delete-modal-btns {
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-top: 30px;
+            }
+
+            .btn-cancel {
+                background: #2dd4bf;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+
+            .btn-confirm-delete {
+                background: #ef4444;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            /* Toasts */
+            .toast-container {
+                position: absolute;
+                top: 80px;
+                right: 30px;
+                z-index: 999;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .toast {
+                padding: 10px 20px;
+                border-radius: 20px;
+                color: white;
+                font-weight: 600;
+                font-size: 13px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .toast-success-add {
+                background: #1e3a8a;
+            }
+
+            /* Màu xanh navy cho thêm mới */
+            .toast-success-delete {
+                background: #ef4444;
+            }
+
+            /* Màu đỏ cho xóa */
+            .toast-success-edit {
+                background: #14b8a6;
+            }
+
+            /* Màu xanh ngọc cho cập nhật */
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="sidebar-placeholder" class="sidebar"></div>
+
+        <div class="main" style="position: relative;">
+            <div class="navbar"
+                style="display: flex; justify-content: space-between; padding: 15px 30px; background: #f8fafc; align-items: center;">
+                <h1 style="font-size: 24px; color: #0f172a; margin: 0;">Mã Giảm Giá</h1>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div style="position: relative;">
+                        <i class="fa-solid fa-magnifying-glass"
+                            style="position: absolute; left: 10px; top: 10px; color: #94a3b8;"></i>
+                        <input type="text" placeholder="Tìm Kiếm"
+                            style="padding: 8px 10px 8px 30px; border-radius: 20px; border: 1px solid #cbd5e1; outline: none; width: 250px;">
+                    </div>
+                    <div class="user"
+                        style="display: flex; align-items: center; gap: 15px; font-weight: 600; color: #334155;">
+                        <span><i class="fa-regular fa-circle-user" style="font-size: 20px;"></i> ADMIN</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="toast-area" class="toast-container"></div>
+
+            <div class="content-wrapper"
+                style="padding: 20px 30px; background: #f8fafc; min-height: calc(100vh - 70px);">
+
+                <div id="view-list">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="color: #94a3b8; font-size: 13px;">Mã Giảm Giá/</span>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 13px; color: #1e3a8a;">Bộ Lọc:</span>
+                            <select
+                                style="background: #1e3a8a; color: white; padding: 5px 15px; border-radius: 20px; border: none; outline: none;">
+                                <option>ID</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="coupon-table">
+                        <thead>
+                            <tr>
+                                <th>ID Mã Giảm Giá</th>
+                                <th>Trạng Thái</th>
+                                <th>Giờ Bắt Đầu</th>
+                                <th>Giờ Kết Thúc</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+
+                    <div style="text-align: center; margin: 20px 0; color: #94a3b8; font-size: 13px;">
+                        <i class="fa-solid fa-arrow-left"></i> &nbsp; 1 &nbsp; 2 &nbsp; 3 &nbsp; 4 &nbsp; 5 &nbsp; <i
+                            class="fa-solid fa-arrow-right"></i>
+                    </div>
+
+                    <h3 style="color: #334155; font-size: 16px; margin-bottom: 10px;">Thêm Mã Giảm Giá</h3>
+                    <div class="add-form-container">
+                        <div class="form-grid">
+                            <div class="form-group"><label>Tên Mã Giảm Giá:</label><input type="text" id="add-name"
+                                    placeholder="Nhập tên mã"></div>
+                            <div class="form-group"><label>Đối Tượng</label><select id="add-target">
+                                    <option>Vận chuyển</option>
+                                    <option>Sản phẩm</option>
+                                </select></div>
+                            <div class="form-group"><label>Loại</label><select id="add-type">
+                                    <option>%</option>
+                                    <option>VND</option>
+                                </select></div>
+                            <div class="form-group"><label>Mức Độ</label><input type="number" id="add-value"
+                                    value="100"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group" style="grid-column: span 2;"><label>Mô Tả</label><textarea
+                                    id="add-desc" rows="3"></textarea></div>
+                            <div class="form-group">
+                                <label>Giờ Bắt Đầu</label><input type="text" id="add-start"
+                                    placeholder="00:00 26/11/2025" style="margin-bottom: 10px;">
+                                <label>Số Lượng</label><input type="text" id="add-qty" placeholder="Không Giới Hạn">
+                            </div>
+                            <div class="form-group"><label>Giờ Kết Thúc</label><input type="text" id="add-end"
+                                    placeholder="23:59 26/11/2025"></div>
+                        </div>
+                        <button class="add-btn" onclick="addNewCoupon()">Thêm <i class="fa-solid fa-plus"></i></button>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+
+                <div id="view-detail">
+                    <div style="margin-bottom: 20px; cursor: pointer; color: #64748b; font-size: 13px;"
+                        onclick="showListView()">
+                        <i class="fa-solid fa-arrow-left-long"></i> Mã Giảm Giá / Chi Tiết Mã Giảm Giá
+                    </div>
+
+                    <div class="detail-header">
+                        <div class="detail-icon"><i class="fa-solid fa-truck"></i></div>
+                        <div>
+                            <h2 id="detail-title" style="margin: 0; font-size: 20px;">Free Ship</h2>
+                            <p id="detail-subtitle" style="margin: 5px 0 0 0; color: #2dd4bf; font-size: 13px;">Miễn phí
+                                vận chuyển cho đơn hàng trên 2.000.000 đ</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-grid">
+                        <div style="background: #e2e8f0; padding: 30px; border-radius: 0 0 0 8px;">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label>Tên Mã Giảm Giá:</label>
+                                <input type="text" id="detail-name">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label>Mô Tả</label>
+                                <textarea id="detail-desc" rows="4"></textarea>
+                            </div>
+                            <div
+                                style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                                <div class="form-group">
+                                    <label>Đối Tượng</label>
+                                    <select id="detail-target">
+                                        <option>Vận chuyển</option>
+                                        <option>Sản phẩm</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Loại</label>
+                                    <select id="detail-type">
+                                        <option>%</option>
+                                        <option>VND</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mức Độ</label>
+                                    <input type="number" id="detail-value">
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                                <div class="form-group"><label>Giờ Bắt Đầu</label><input type="text" id="detail-start">
+                                </div>
+                                <div class="form-group"><label>Giờ Kết Thúc</label><input type="text" id="detail-end">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: #1e3a8a; padding: 30px; border-radius: 0 0 8px 0; color: white;">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="color: #cbd5e1;">Loại Sản Phẩm</label>
+                                <select style="background: white; color: black; border: none;">
+                                    <option>Tất Cả</option>
+                                </select>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-bottom: 15px;">
+                                <div class="form-group">
+                                    <label style="color: #cbd5e1;">Điều Kiện</label>
+                                    <select style="background: white; color: black; border: none;">
+                                        <option>></option>
+                                        <option>
+                                            << /option>
+                                        <option>=</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label style="color: #cbd5e1;">Giá Trị Đơn Hàng</label>
+                                    <input type="text" value="2.000.000"
+                                        style="background: white; color: black; border: none;">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="color: #cbd5e1;">Số Lượng</label>
+                                <input type="text" id="detail-qty"
+                                    style="background: white; color: black; border: none;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 40px;">
+                                <label style="color: #cbd5e1;">Trạng Thái</label>
+                                <select id="detail-status" style="background: white; color: black; border: none;">
+                                    <option value="Đang Kích Hoạt">Đang Hoạt Động (Kích Hoạt)</option>
+                                    <option value="Chưa Hoạt Động">Chưa Hoạt Động</option>
+                                    <option value="Đã Kết Thúc">Đã Kết Thúc</option>
+                                </select>
+                            </div>
+
+                            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                <button
+                                    style="background: #14b8a6; color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 600;"
+                                    onclick="updateCoupon()">
+                                    Cập Nhật Phiếu <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button
+                                    style="background: #ef4444; color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 600;"
+                                    onclick="confirmDeleteFromDetail()">
+                                    Xóa Phiếu Giảm Giá <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="modal-delete" class="modal-overlay">
+            <div class="delete-modal">
+                <h2 style="margin-top: 0;">Xác nhận xóa mã giảm giá?</h2>
+                <div style="display: flex; align-items: center; gap: 15px; margin: 20px 0;">
+                    <div class="detail-icon" style="width: 50px; height: 50px; font-size: 20px;"><i
+                            class="fa-solid fa-truck"></i></div>
+                    <div>
+                        <h3 id="modal-del-name" style="margin: 0; font-size: 16px;">Free Ship</h3>
+                        <p id="modal-del-desc" style="margin: 5px 0 0 0; color: #2dd4bf; font-size: 12px;">Miễn phí vận
+                            chuyển</p>
+                    </div>
+                </div>
+                <div class="delete-modal-btns">
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Hủy Thao Tác</button>
+                    <button class="btn-confirm-delete" onclick="executeDelete()">Xác Nhận <i
+                            class="fa-regular fa-trash-can"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <script src="../../utils/constants.js"></script>
+        <script src="./js/sidebar.js"></script>
+
+        <script>
+            let coupons = [
+                { id: 'GG_285723', status: 'Đang Kích Hoạt', start: '00:00 25/11/2024', end: '23:59 26/11/2024', name: 'Free Ship', target: 'Vận chuyển', type: '%', value: '100', desc: 'Miễn phí vận chuyển cho đơn hàng trên 2.000.000 đ', qty: 'Không Giới Hạn' },
+                { id: 'GG_285724', status: 'Chưa Hoạt Động', start: '00:00 25/12/2024', end: '23:59 26/12/2024', name: 'Giảm 50K', target: 'Sản phẩm', type: 'VND', value: '50000', desc: 'Giảm trực tiếp 50k vào sản phẩm', qty: '100' }
+            ];
+
+            let currentCouponId = null; // Biến dùng chung để lưu ID đang Edit hoặc Delete
+
+            function renderTable() {
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = '';
+                coupons.forEach(coupon => {
+                    let statusClass = coupon.status === 'Đang Kích Hoạt' ? 'status-active' : (coupon.status === 'Chưa Hoạt Động' ? 'status-inactive' : 'status-ended');
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                    <td>${coupon.id}</td>
+                    <td class="${statusClass}">${coupon.status}</td>
+                    <td>${coupon.start}</td>
+                    <td>${coupon.end}</td>
+                    <td>
+                        <button class="action-btn btn-delete" onclick="openDeleteModal('${coupon.id}')"><i class="fa-regular fa-trash-can"></i></button>
+                        <button class="action-btn btn-edit" onclick="openDetailView('${coupon.id}')"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                `;
+                    tbody.appendChild(tr);
+                });
+            }
+            renderTable();
+
+            function addNewCoupon() {
+                const name = document.getElementById('add-name').value;
+                if (!name) { alert("Vui lòng nhập tên!"); return; }
+                const newCoupon = {
+                    id: 'GG_' + Math.floor(Math.random() * 900000 + 100000),
+                    status: 'Chưa Hoạt Động',
+                    start: document.getElementById('add-start').value,
+                    end: document.getElementById('add-end').value || 'Không giới hạn',
+                    name: name,
+                    target: document.getElementById('add-target').value,
+                    type: document.getElementById('add-type').value,
+                    value: document.getElementById('add-value').value,
+                    desc: document.getElementById('add-desc').value,
+                    qty: document.getElementById('add-qty').value || 'Không Giới Hạn'
+                };
+                coupons.unshift(newCoupon);
+                renderTable();
+                showToast('Thêm Thành Công', 'success-add', 'fa-plus');
+            }
+
+            // MỞ VIEW CHI TIẾT (ĐỂ SỬA)
+            function openDetailView(id) {
+                const coupon = coupons.find(c => c.id === id);
+                if (!coupon) return;
+                currentCouponId = coupon.id; // Ghi nhớ ID đang sửa
+
+                // Nạp dữ liệu vào form
+                document.getElementById('detail-title').innerText = coupon.name;
+                document.getElementById('detail-subtitle').innerText = coupon.desc;
+
+                document.getElementById('detail-name').value = coupon.name;
+                document.getElementById('detail-desc').value = coupon.desc;
+                document.getElementById('detail-target').value = coupon.target;
+                document.getElementById('detail-type').value = coupon.type;
+                document.getElementById('detail-value').value = coupon.value;
+                document.getElementById('detail-start').value = coupon.start;
+                document.getElementById('detail-end').value = coupon.end;
+                document.getElementById('detail-qty').value = coupon.qty;
+                document.getElementById('detail-status').value = coupon.status;
+
+                document.getElementById('view-list').style.display = 'none';
+                document.getElementById('view-detail').style.display = 'block';
+            }
+
+            // LƯU CẬP NHẬT
+            function updateCoupon() {
+                const coupon = coupons.find(c => c.id === currentCouponId);
+                if (coupon) {
+                    coupon.name = document.getElementById('detail-name').value;
+                    coupon.desc = document.getElementById('detail-desc').value;
+                    coupon.target = document.getElementById('detail-target').value;
+                    coupon.type = document.getElementById('detail-type').value;
+                    coupon.value = document.getElementById('detail-value').value;
+                    coupon.start = document.getElementById('detail-start').value;
+                    coupon.end = document.getElementById('detail-end').value;
+                    coupon.qty = document.getElementById('detail-qty').value;
+                    coupon.status = document.getElementById('detail-status').value;
+                }
+
+                renderTable(); // Vẽ lại bảng
+                showListView(); // Quay về danh sách
+                showToast('Sửa Thành Công', 'success-edit', 'fa-pen'); // Hiện thông báo
+            }
+
+            function showListView() {
+                document.getElementById('view-detail').style.display = 'none';
+                document.getElementById('view-list').style.display = 'block';
+            }
+
+            // CHỨC NĂNG XÓA
+            function openDeleteModal(id) {
+                const coupon = coupons.find(c => c.id === id);
+                currentCouponId = id;
+                document.getElementById('modal-del-name').innerText = coupon.name;
+                document.getElementById('modal-del-desc').innerText = coupon.desc;
+                document.getElementById('modal-delete').style.display = 'flex';
+            }
+            function confirmDeleteFromDetail() { openDeleteModal(currentCouponId); }
+            function closeDeleteModal() { document.getElementById('modal-delete').style.display = 'none'; }
+
+            function executeDelete() {
+                coupons = coupons.filter(c => c.id !== currentCouponId);
+                closeDeleteModal();
+                showListView();
+                renderTable();
+                showToast('Đã xóa thành công', 'success-delete', 'fa-trash-can');
+            }
+
+            // HÀM HIỆN THÔNG BÁO (TOAST)
+            function showToast(message, typeClass, iconClass) {
+                const toastArea = document.getElementById('toast-area');
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${typeClass}`;
+                toast.innerHTML = `<i class="fa-solid ${iconClass}"></i> ${message}`;
+                toastArea.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.animation = 'slideIn 0.3s ease-out reverse forwards';
+                    setTimeout(() => { toast.remove(); }, 300);
+                }, 3000);
+            }
+        </script>
+    </body>
+
+</html>

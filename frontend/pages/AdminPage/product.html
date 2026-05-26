@@ -1,95 +1,101 @@
 <!DOCTYPE html>
 <html lang="vi">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản Lý Sản Phẩm - Admin</title>
-    <meta name="description" content="Trang quản trị quản lý danh mục sản phẩm laptop, cập nhật giá bán, hình ảnh và số lượng tại LAPTECH.">
-    <meta property="og:title" content="Quản Lý Sản Phẩm - Admin">
-    <meta property="og:description" content="Trang quản trị quản lý danh mục sản phẩm laptop, cập nhật giá bán, hình ảnh và số lượng tại LAPTECH.">
-    <link rel="stylesheet" href="./css/admin.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quản Lý Sản Phẩm - Admin</title>
+        <meta name="description"
+            content="Trang quản trị quản lý danh mục sản phẩm laptop, cập nhật giá bán, hình ảnh và số lượng tại LAPTECH.">
+        <meta property="og:title" content="Quản Lý Sản Phẩm - Admin">
+        <meta property="og:description"
+            content="Trang quản trị quản lý danh mục sản phẩm laptop, cập nhật giá bán, hình ảnh và số lượng tại LAPTECH.">
+        <link rel="stylesheet" href="./css/admin.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    </head>
 
-<body>
-    <!-- SIDEBAR -->
-    <div id="sidebar-placeholder" class="sidebar"></div>
+    <body>
+        <!-- SIDEBAR -->
+        <div id="sidebar-placeholder" class="sidebar"></div>
 
-    <!-- MAIN -->
-    <div class="main">
+        <!-- MAIN -->
+        <div class="main">
 
-        <!-- NAVBAR -->
-        <div class="navbar">
-            <h1>Quản Lý Sản Phẩm</h1>
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm...">
-            </div>
-            <div class="user">
-                👤 ADMIN
-            </div>
-        </div>
-
-        <!-- CONTENT -->
-        <div class="content-wrapper">
-            <div class="content">
-                <div class="breadcrumb">
-                    Sản Phẩm / Danh sách
+            <!-- NAVBAR -->
+            <div class="navbar">
+                <h1>Quản Lý Sản Phẩm</h1>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm...">
                 </div>
+                <div class="user">
+                    👤 ADMIN
+                </div>
+            </div>
 
-                <!-- FILTER & ACTIONS -->
-                <div class="filter-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <label>Bộ lọc thương hiệu:</label>
-                        <select id="filter-brand" style="padding: 6px 12px; border-radius: 4px; border: 1px solid #ddd; background: #fff; font-size: 14px; cursor: pointer;">
-                            <option value="">Tất cả thương hiệu</option>
-                            <option value="HP">HP</option>
-                            <option value="Dell">Dell</option>
-                            <option value="Lenovo">Lenovo</option>
-                            <option value="ASUS">ASUS</option>
-                            <option value="Acer">Acer</option>
-                            <option value="MacBook">MacBook</option>
-                        </select>
+            <!-- CONTENT -->
+            <div class="content-wrapper">
+                <div class="content">
+                    <div class="breadcrumb">
+                        Sản Phẩm / Danh sách
                     </div>
 
-                    <button id="btn-add-product" style="background-color: #1e3a8a; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: all 0.2s ease;">
-                        <i class="fa-solid fa-plus"></i> Thêm sản phẩm mới
-                    </button>
-                </div>
+                    <!-- FILTER & ACTIONS -->
+                    <div class="filter-row"
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label>Bộ lọc thương hiệu:</label>
+                            <select id="filter-brand"
+                                style="padding: 6px 12px; border-radius: 4px; border: 1px solid #ddd; background: #fff; font-size: 14px; cursor: pointer;">
+                                <option value="">Tất cả thương hiệu</option>
+                                <option value="HP">HP</option>
+                                <option value="Dell">Dell</option>
+                                <option value="Lenovo">Lenovo</option>
+                                <option value="ASUS">ASUS</option>
+                                <option value="Acer">Acer</option>
+                                <option value="MacBook">MacBook</option>
+                            </select>
+                        </div>
 
-                <!-- TABLE -->
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                    <thead>
-                        <tr>
-                            <th style="width: 80px; padding: 12px 15px; text-align: left;">Hình Ảnh</th>
-                            <th style="padding: 12px 15px; text-align: left;">Tên Sản Phẩm</th>
-                            <th style="padding: 12px 15px; text-align: left;">Thương Hiệu</th>
-                            <th style="padding: 12px 15px; text-align: left;">Giá Bán</th>
-                            <th style="padding: 12px 15px; text-align: left;">Số Lượng</th>
-                            <th style="padding: 12px 15px; text-align: left;">Mô Tả</th>
-                            <th style="width: 120px; padding: 12px 15px; text-align: center;">Thao Tác</th>
-                        </tr>
-                    </thead>
-                    <tbody id="product-table-body">
-                        <!-- Sẽ tải động bằng javascript -->
-                    </tbody>
-                </table>
+                        <button id="btn-add-product"
+                            style="background-color: #1e3a8a; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: all 0.2s ease;">
+                            <i class="fa-solid fa-plus"></i> Thêm sản phẩm mới
+                        </button>
+                    </div>
 
-                <!-- PAGINATION -->
-                <div class="pagination" id="product-pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 20px;">
-                    <!-- Thêm động bằng javascript -->
+                    <!-- TABLE -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px; padding: 12px 15px; text-align: left;">Hình Ảnh</th>
+                                <th style="padding: 12px 15px; text-align: left;">Tên Sản Phẩm</th>
+                                <th style="padding: 12px 15px; text-align: left;">Thương Hiệu</th>
+                                <th style="padding: 12px 15px; text-align: left;">Giá Bán</th>
+                                <th style="padding: 12px 15px; text-align: left;">Số Lượng</th>
+                                <th style="padding: 12px 15px; text-align: left;">Mô Tả</th>
+                                <th style="width: 120px; padding: 12px 15px; text-align: center;">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-table-body">
+                            <!-- Sẽ tải động bằng javascript -->
+                        </tbody>
+                    </table>
+
+                    <!-- PAGINATION -->
+                    <div class="pagination" id="product-pagination"
+                        style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 20px;">
+                        <!-- Thêm động bằng javascript -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Scripts -->
-    <script src="../../utils/constants.js"></script>
-    <script src="./js/sidebar.js"></script>
-    <script src="./js/product.js"></script>
-</body>
+        <!-- Scripts -->
+        <script src="../../utils/constants.js"></script>
+        <script src="./js/sidebar.js"></script>
+        <script src="./js/product.js"></script>
+    </body>
 
 </html>

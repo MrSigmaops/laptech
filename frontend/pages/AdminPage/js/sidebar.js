@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <a href="../../index.html" style="color:white; text-decoration: none;">LAPTECH</a>
             </div>
 
-            <a href="../../index.html" style="color:white; text-decoration: none;"> 
+            <a href="dashboard.html" style="color:white; text-decoration: none;"> 
                 <div class="menu-item">
                     <i class="fa-solid fa-house"></i> DashBoard
                 </div>
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </a>
 
-            <a href="#" style="color:white; text-decoration: none;">
+            <a href="coupon.html" style="color:white; text-decoration: none;">
                 <div class="menu-item">
                     <i class="fa-solid fa-gift"></i> Mã Giảm Giá
                 </div>
