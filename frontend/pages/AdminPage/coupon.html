@@ -323,6 +323,8 @@
                     <h3 style="color: #334155; font-size: 16px; margin-bottom: 10px;">Thêm Mã Giảm Giá</h3>
                     <div class="add-form-container">
                         <div class="form-grid">
+                            <div class="form-group"><label>Mã Coupon</label><input type="text" id="add-code"
+                                    placeholder="VD: LAPTECH50"></div>
                             <div class="form-group"><label>Tên Mã Giảm Giá:</label><input type="text" id="add-name"
                                     placeholder="Nhập tên mã"></div>
                             <div class="form-group"><label>Đối Tượng</label><select id="add-target">
@@ -340,12 +342,12 @@
                             <div class="form-group" style="grid-column: span 2;"><label>Mô Tả</label><textarea
                                     id="add-desc" rows="3"></textarea></div>
                             <div class="form-group">
-                                <label>Giờ Bắt Đầu</label><input type="text" id="add-start"
-                                    placeholder="00:00 26/11/2025" style="margin-bottom: 10px;">
+                                <label>Giờ Bắt Đầu</label><input type="datetime-local" id="add-start"
+                                    style="margin-bottom: 10px;">
                                 <label>Số Lượng</label><input type="text" id="add-qty" placeholder="Không Giới Hạn">
                             </div>
-                            <div class="form-group"><label>Giờ Kết Thúc</label><input type="text" id="add-end"
-                                    placeholder="23:59 26/11/2025"></div>
+                            <div class="form-group"><label>Giờ Kết Thúc</label><input type="datetime-local"
+                                    id="add-end"></div>
                         </div>
                         <button class="add-btn" onclick="addNewCoupon()">Thêm <i class="fa-solid fa-plus"></i></button>
                         <div style="clear: both;"></div>
@@ -369,6 +371,10 @@
 
                     <div class="detail-grid">
                         <div style="background: #e2e8f0; padding: 30px; border-radius: 0 0 0 8px;">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label>Mã Coupon</label>
+                                <input type="text" id="detail-code">
+                            </div>
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label>Tên Mã Giảm Giá:</label>
                                 <input type="text" id="detail-name">
@@ -399,9 +405,11 @@
                                 </div>
                             </div>
                             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                                <div class="form-group"><label>Giờ Bắt Đầu</label><input type="text" id="detail-start">
+                                <div class="form-group"><label>Giờ Bắt Đầu</label><input type="datetime-local"
+                                        id="detail-start">
                                 </div>
-                                <div class="form-group"><label>Giờ Kết Thúc</label><input type="text" id="detail-end">
+                                <div class="form-group"><label>Giờ Kết Thúc</label><input type="datetime-local"
+                                        id="detail-end">
                                 </div>
                             </div>
                         </div>
@@ -437,9 +445,9 @@
                             <div class="form-group" style="margin-bottom: 40px;">
                                 <label style="color: #cbd5e1;">Trạng Thái</label>
                                 <select id="detail-status" style="background: white; color: black; border: none;">
-                                    <option value="Đang Kích Hoạt">Đang Hoạt Động (Kích Hoạt)</option>
-                                    <option value="Chưa Hoạt Động">Chưa Hoạt Động</option>
-                                    <option value="Đã Kết Thúc">Đã Kết Thúc</option>
+                                    <option value="ACTIVE">Đang Hoạt Động (Kích Hoạt)</option>
+                                    <option value="PENDING">Chưa Hoạt Động</option>
+                                    <option value="EXPIRED">Đã Kết Thúc</option>
                                 </select>
                             </div>
 
@@ -491,91 +499,183 @@
                 { id: 'GG_285724', status: 'Chưa Hoạt Động', start: '00:00 25/12/2024', end: '23:59 26/12/2024', name: 'Giảm 50K', target: 'Sản phẩm', type: 'VND', value: '50000', desc: 'Giảm trực tiếp 50k vào sản phẩm', qty: '100' }
             ];
 
-            let currentCouponId = null; // Biến dùng chung để lưu ID đang Edit hoặc Delete
+            const couponTargetMap = {
+                'Vận chuyển': 'SHIPPING',
+                'Sản phẩm': 'PRODUCT'
+            };
+
+            const couponTargetLabel = {
+                'SHIPPING': 'Vận chuyển',
+                'PRODUCT': 'Sản phẩm',
+                'ORDER': 'Đơn hàng'
+            };
+
+            const couponStatusLabel = {
+                'ACTIVE': 'Đang Kích Hoạt',
+                'PENDING': 'Chưa Hoạt Động',
+                'EXPIRED': 'Đã Kết Thúc'
+            };
+
+            let coupons = [];
+            let currentCouponId = null;
+
+            async function fetchCoupons() {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch('/api/coupons', {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        alert(data.message || 'Không thể tải danh sách mã giảm giá');
+                        return;
+                    }
+                    coupons = data.coupons || [];
+                    renderTable();
+                } catch (error) {
+                    console.error('Lỗi tải coupon:', error);
+                    alert('Không thể tải danh sách mã giảm giá');
+                }
+            }
+
+            function formatDate(dateString) {
+                if (!dateString) return 'Không giới hạn';
+                const date = new Date(dateString);
+                if (Number.isNaN(date.getTime())) return 'Không hợp lệ';
+                return new Intl.DateTimeFormat('vi-VN', {
+                    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+                }).format(date);
+            }
 
             function renderTable() {
                 const tbody = document.getElementById('table-body');
                 tbody.innerHTML = '';
                 coupons.forEach(coupon => {
-                    let statusClass = coupon.status === 'Đang Kích Hoạt' ? 'status-active' : (coupon.status === 'Chưa Hoạt Động' ? 'status-inactive' : 'status-ended');
+                    const statusClass = coupon.status === 'ACTIVE' ? 'status-active' : (coupon.status === 'PENDING' ? 'status-inactive' : 'status-ended');
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                    <td>${coupon.id}</td>
-                    <td class="${statusClass}">${coupon.status}</td>
-                    <td>${coupon.start}</td>
-                    <td>${coupon.end}</td>
-                    <td>
-                        <button class="action-btn btn-delete" onclick="openDeleteModal('${coupon.id}')"><i class="fa-regular fa-trash-can"></i></button>
-                        <button class="action-btn btn-edit" onclick="openDetailView('${coupon.id}')"><i class="fa-solid fa-pen"></i></button>
-                    </td>
-                `;
+                        <td>${coupon.code}</td>
+                        <td class="${statusClass}">${couponStatusLabel[coupon.status] || coupon.status}</td>
+                        <td>${formatDate(coupon.startDate)}</td>
+                        <td>${formatDate(coupon.endDate)}</td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="openDeleteModal('${coupon._id}')"><i class="fa-regular fa-trash-can"></i></button>
+                            <button class="action-btn btn-edit" onclick="openDetailView('${coupon._id}')"><i class="fa-solid fa-pen"></i></button>
+                        </td>
+                    `;
                     tbody.appendChild(tr);
                 });
             }
-            renderTable();
 
-            function addNewCoupon() {
-                const name = document.getElementById('add-name').value;
-                if (!name) { alert("Vui lòng nhập tên!"); return; }
-                const newCoupon = {
-                    id: 'GG_' + Math.floor(Math.random() * 900000 + 100000),
-                    status: 'Chưa Hoạt Động',
-                    start: document.getElementById('add-start').value,
-                    end: document.getElementById('add-end').value || 'Không giới hạn',
-                    name: name,
-                    target: document.getElementById('add-target').value,
-                    type: document.getElementById('add-type').value,
-                    value: document.getElementById('add-value').value,
-                    desc: document.getElementById('add-desc').value,
-                    qty: document.getElementById('add-qty').value || 'Không Giới Hạn'
+            async function addNewCoupon() {
+                const code = document.getElementById('add-code').value.trim();
+                const name = document.getElementById('add-name').value.trim();
+                if (!code || !name) {
+                    alert('Vui lòng nhập mã và tên mã giảm giá!');
+                    return;
+                }
+
+                const payload = {
+                    code,
+                    name,
+                    description: document.getElementById('add-desc').value.trim(),
+                    target: couponTargetMap[document.getElementById('add-target').value] || 'ORDER',
+                    type: document.getElementById('add-type').value === 'VND' ? 'VND' : 'PERCENT',
+                    value: Number(document.getElementById('add-value').value) || 0,
+                    status: 'ACTIVE',
+                    startDate: document.getElementById('add-start').value || undefined,
+                    endDate: document.getElementById('add-end').value || undefined,
+                    quantity: Number(document.getElementById('add-qty').value) || 0
                 };
-                coupons.unshift(newCoupon);
-                renderTable();
-                showToast('Thêm Thành Công', 'success-add', 'fa-plus');
+
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch('/api/coupons', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        alert(data.message || 'Không thể thêm mã giảm giá');
+                        return;
+                    }
+                    coupons.unshift(data.coupon);
+                    renderTable();
+                    showToast('Thêm Thành Công', 'success-add', 'fa-plus');
+                } catch (error) {
+                    console.error('Lỗi thêm coupon:', error);
+                    alert('Lỗi khi thêm mã giảm giá');
+                }
             }
 
-            // MỞ VIEW CHI TIẾT (ĐỂ SỬA)
             function openDetailView(id) {
-                const coupon = coupons.find(c => c.id === id);
+                const coupon = coupons.find(c => c._id === id);
                 if (!coupon) return;
-                currentCouponId = coupon.id; // Ghi nhớ ID đang sửa
+                currentCouponId = id;
 
-                // Nạp dữ liệu vào form
                 document.getElementById('detail-title').innerText = coupon.name;
-                document.getElementById('detail-subtitle').innerText = coupon.desc;
-
-                document.getElementById('detail-name').value = coupon.name;
-                document.getElementById('detail-desc').value = coupon.desc;
-                document.getElementById('detail-target').value = coupon.target;
-                document.getElementById('detail-type').value = coupon.type;
-                document.getElementById('detail-value').value = coupon.value;
-                document.getElementById('detail-start').value = coupon.start;
-                document.getElementById('detail-end').value = coupon.end;
-                document.getElementById('detail-qty').value = coupon.qty;
-                document.getElementById('detail-status').value = coupon.status;
+                document.getElementById('detail-subtitle').innerText = coupon.description || '';
+                document.getElementById('detail-code').value = coupon.code || '';
+                document.getElementById('detail-name').value = coupon.name || '';
+                document.getElementById('detail-desc').value = coupon.description || '';
+                document.getElementById('detail-target').value = couponTargetLabel[coupon.target] || 'Đơn hàng';
+                document.getElementById('detail-type').value = coupon.type === 'VND' ? 'VND' : '%';
+                document.getElementById('detail-value').value = coupon.value || 0;
+                document.getElementById('detail-start').value = coupon.startDate ? new Date(coupon.startDate).toISOString().slice(0, 16) : '';
+                document.getElementById('detail-end').value = coupon.endDate ? new Date(coupon.endDate).toISOString().slice(0, 16) : '';
+                document.getElementById('detail-qty').value = coupon.quantity || '';
+                document.getElementById('detail-status').value = coupon.status || 'ACTIVE';
 
                 document.getElementById('view-list').style.display = 'none';
                 document.getElementById('view-detail').style.display = 'block';
             }
 
-            // LƯU CẬP NHẬT
-            function updateCoupon() {
-                const coupon = coupons.find(c => c.id === currentCouponId);
-                if (coupon) {
-                    coupon.name = document.getElementById('detail-name').value;
-                    coupon.desc = document.getElementById('detail-desc').value;
-                    coupon.target = document.getElementById('detail-target').value;
-                    coupon.type = document.getElementById('detail-type').value;
-                    coupon.value = document.getElementById('detail-value').value;
-                    coupon.start = document.getElementById('detail-start').value;
-                    coupon.end = document.getElementById('detail-end').value;
-                    coupon.qty = document.getElementById('detail-qty').value;
-                    coupon.status = document.getElementById('detail-status').value;
-                }
+            async function updateCoupon() {
+                if (!currentCouponId) return;
 
-                renderTable(); // Vẽ lại bảng
-                showListView(); // Quay về danh sách
-                showToast('Sửa Thành Công', 'success-edit', 'fa-pen'); // Hiện thông báo
+                const payload = {
+                    code: document.getElementById('detail-code').value.trim(),
+                    name: document.getElementById('detail-name').value.trim(),
+                    description: document.getElementById('detail-desc').value.trim(),
+                    target: couponTargetMap[document.getElementById('detail-target').value] || 'ORDER',
+                    type: document.getElementById('detail-type').value === 'VND' ? 'VND' : 'PERCENT',
+                    value: Number(document.getElementById('detail-value').value) || 0,
+                    status: document.getElementById('detail-status').value || 'ACTIVE',
+                    startDate: document.getElementById('detail-start').value || undefined,
+                    endDate: document.getElementById('detail-end').value || undefined,
+                    quantity: Number(document.getElementById('detail-qty').value) || 0
+                };
+
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`/api/coupons/${currentCouponId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        alert(data.message || 'Không thể cập nhật mã giảm giá');
+                        return;
+                    }
+                    const index = coupons.findIndex(c => c._id === currentCouponId);
+                    if (index >= 0) {
+                        coupons[index] = data.coupon;
+                    }
+                    renderTable();
+                    showListView();
+                    showToast('Sửa Thành Công', 'success-edit', 'fa-pen');
+                } catch (error) {
+                    console.error('Lỗi cập nhật coupon:', error);
+                    alert('Lỗi khi cập nhật mã giảm giá');
+                }
             }
 
             function showListView() {
@@ -583,26 +683,46 @@
                 document.getElementById('view-list').style.display = 'block';
             }
 
-            // CHỨC NĂNG XÓA
             function openDeleteModal(id) {
-                const coupon = coupons.find(c => c.id === id);
+                const coupon = coupons.find(c => c._id === id);
                 currentCouponId = id;
-                document.getElementById('modal-del-name').innerText = coupon.name;
-                document.getElementById('modal-del-desc').innerText = coupon.desc;
+                document.getElementById('modal-del-name').innerText = coupon?.name || '';
+                document.getElementById('modal-del-desc').innerText = coupon?.description || '';
                 document.getElementById('modal-delete').style.display = 'flex';
             }
-            function confirmDeleteFromDetail() { openDeleteModal(currentCouponId); }
-            function closeDeleteModal() { document.getElementById('modal-delete').style.display = 'none'; }
 
-            function executeDelete() {
-                coupons = coupons.filter(c => c.id !== currentCouponId);
-                closeDeleteModal();
-                showListView();
-                renderTable();
-                showToast('Đã xóa thành công', 'success-delete', 'fa-trash-can');
+            function confirmDeleteFromDetail() {
+                openDeleteModal(currentCouponId);
             }
 
-            // HÀM HIỆN THÔNG BÁO (TOAST)
+            function closeDeleteModal() {
+                document.getElementById('modal-delete').style.display = 'none';
+            }
+
+            async function executeDelete() {
+                if (!currentCouponId) return;
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`/api/coupons/${currentCouponId}`, {
+                        method: 'DELETE',
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        alert(data.message || 'Không thể xóa mã giảm giá');
+                        return;
+                    }
+                    coupons = coupons.filter(c => c._id !== currentCouponId);
+                    closeDeleteModal();
+                    showListView();
+                    renderTable();
+                    showToast('Đã xóa thành công', 'success-delete', 'fa-trash-can');
+                } catch (error) {
+                    console.error('Lỗi xóa coupon:', error);
+                    alert('Lỗi khi xóa mã giảm giá');
+                }
+            }
+
             function showToast(message, typeClass, iconClass) {
                 const toastArea = document.getElementById('toast-area');
                 const toast = document.createElement('div');
@@ -614,6 +734,8 @@
                     setTimeout(() => { toast.remove(); }, 300);
                 }, 3000);
             }
+
+            fetchCoupons();
         </script>
     </body>
 

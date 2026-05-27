@@ -2,12 +2,24 @@
 const Order = require('../models/order');
 const Cart = require('../models/cart');
 const Product = require('../models/product');
+const Coupon = require('../models/coupon');
+const { validateCouponCode } = require('./couponController');
 
 // 1. Tạo đơn hàng mới từ giỏ hàng
 const createOrder = async (req, res) => {
     try {
         const customerId = req.user._id;
-        const { city, shippingAddress, receiverName, receiverPhone, paymentMethod, note, items, isBuyNow } = req.body;
+        const {
+            city,
+            shippingAddress,
+            receiverName,
+            receiverPhone,
+            paymentMethod,
+            note,
+            items,
+            isBuyNow,
+            couponCode
+        } = req.body;
 
         if (!city || !shippingAddress || !receiverName || !receiverPhone) {
             return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin giao hàng!' });
@@ -54,11 +66,26 @@ const createOrder = async (req, res) => {
             await product.save();
         }
 
+        let discountAmount = 0;
+        let couponAppliedCode = '';
+
+        if (couponCode) {
+            try {
+                const result = await validateCouponCode(couponCode, subTotal);
+                discountAmount = result.discountAmount;
+                couponAppliedCode = result.coupon.code;
+            } catch (error) {
+                return res.status(400).json({ message: error.message });
+            }
+        }
+
         // Tạo đơn hàng mới
-        const totalPrice = subTotal; // subTotal - discountAmount + shippingFee (tạm thời không có voucher và free ship)
+        const totalPrice = Math.max(0, subTotal - discountAmount);
         const order = new Order({
             customerId,
             subTotal,
+            couponCode: couponAppliedCode,
+            discountAmount,
             totalPrice,
             products: orderItems,
             paymentMethod: paymentMethod || 'COD',
@@ -70,6 +97,17 @@ const createOrder = async (req, res) => {
         });
 
         await order.save();
+
+        if (couponAppliedCode) {
+            const coupon = await Coupon.findOne({ code: couponAppliedCode });
+            if (coupon) {
+                coupon.usedCount += 1;
+                if (coupon.quantity > 0 && coupon.usedCount >= coupon.quantity) {
+                    coupon.status = 'EXPIRED';
+                }
+                await coupon.save();
+            }
+        }
 
         // Cập nhật giỏ hàng nếu ĐÂY LÀ ĐƠN TỪ GIỎ HÀNG (Không phải Mua Ngay)
         if (!isBuyNow) {

@@ -20,7 +20,7 @@ const getProducts = async (req, res) => {
 
         // Xây dựng điều kiện truy vấn
         let query = {};
-        
+
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: 'i' } },
@@ -38,10 +38,15 @@ const getProducts = async (req, res) => {
         }
 
         const totalProducts = await Product.countDocuments(query);
+        const sortBy = req.query.sortBy || 'createdAt';
+        const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
+        const sortOptions = ['createdAt', 'totalSale', 'basePrice'];
+        const sortOption = sortOptions.includes(sortBy) ? { [sortBy]: sortOrder } : { createdAt: -1 };
+
         const products = await Product.find(query)
             .skip(skip)
             .limit(limit)
-            .sort({ createdAt: -1 }); // Mới nhất lên đầu
+            .sort(sortOption);
 
         res.status(200).json({
             products,

@@ -22,9 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
     if (sidebarPlaceholder) {
         const path = window.location.pathname;
+        const isDashboardPage = path.includes('dashboard.html');
         const isAccountPage = path.includes('account.html') || path.includes('accountModal.html');
         const isProductPage = path.includes('product.html') || path.includes('productModal.html');
         const isOrderPage = path.includes('order.html') || path.includes('orderModal.html');
+        const isCouponPage = path.includes('coupon.html');
 
         let sidebarHTML = `
             <div class="logo">
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <a href="dashboard.html" style="color:white; text-decoration: none;"> 
-                <div class="menu-item">
+                <div class="menu-item ${isDashboardPage ? 'active' : ''}">
                     <i class="fa-solid fa-house"></i> DashBoard
                 </div>
             </a>
@@ -50,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </a>
 
             <a href="coupon.html" style="color:white; text-decoration: none;">
-                <div class="menu-item">
+                <div class="menu-item ${isCouponPage ? 'active' : ''}">
                     <i class="fa-solid fa-gift"></i> Mã Giảm Giá
                 </div>
             </a>

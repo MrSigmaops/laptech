@@ -4,128 +4,156 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LAPTECH - Trang chủ</title>
+        <title>LAPTECH - Sản Phẩm Ưu Đãi</title>
         <meta name="description"
-            content="LAPTECH - Cửa hàng bán lẻ laptop chính hãng uy tín hàng đầu, linh kiện điện tử giá tốt và chế độ hậu mãi tận tâm.">
-        <meta property="og:title" content="LAPTECH - Trang chủ">
-        <meta property="og:description"
             content="LAPTECH - Cửa hàng bán lẻ laptop chính hãng uy tín hàng đầu, linh kiện điện tử giá tốt và chế độ hậu mãi tận tâm.">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="style.css">
+
         <style>
-            /* Product grid layout */
-            .product-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
-                margin-bottom: 20px;
+            .home-banner {
                 width: 100%;
+                margin-bottom: 40px;
+                background-color: #f1f5f9;
+                min-height: 300px;
             }
 
-            /* Make product-card look like home-product-card (visual only)
-               - keep HTML content unchanged */
-            .product-card {
-                position: relative;
-                background: #fff;
-                border: 1px solid #e2e8f0;
-                border-radius: 8px;
-                padding: 12px;
-                cursor: pointer;
-                transition: 0.2s;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .product-card:hover {
-                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-                transform: translateY(-4px);
-            }
-
-            /* Image area: square aspect and contain to avoid cropping */
-            .product-image,
-            .product-card img {
+            .home-banner img {
                 width: 100%;
+                display: block;
+                object-fit: cover;
             }
 
-            .product-image {
-                aspect-ratio: 1 / 1;
-                min-height: 0;
-                background: #fafafa;
+            .home-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 15px;
+            }
+
+            .section-title {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                overflow: hidden;
+                margin: 50px 0 30px;
+                font-size: 20px;
+                font-weight: 700;
+                color: #333;
+                text-transform: uppercase;
+            }
+
+            .section-title::before,
+            .section-title::after {
+                content: "";
+                flex: 1;
+                height: 1px;
+                background: #ccc;
+            }
+
+            .section-title span {
+                padding: 0 20px;
+            }
+
+            .home-product-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+
+            .home-product-card {
+                background: #fff;
+                padding: 15px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
                 border-radius: 8px;
-                margin-bottom: 12px;
+                position: relative;
+                transition: box-shadow 0.3s ease, transform 0.3s ease;
+                border: 1px solid #f1f5f9;
+                cursor: pointer;
             }
 
-            .product-card img,
-            .product-image img {
+            .home-product-card:hover {
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+                transform: translateY(-5px);
+            }
+
+            .home-product-card img {
                 width: 100%;
-                height: 100%;
-                object-fit: contain;
-                display: block;
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+                margin-bottom: 15px;
+                background-color: #f8fafc;
+                border-radius: 6px;
             }
 
-            /* Title / name */
-            .product-name,
-            .product-info h3 {
-                font-size: 14px;
+            .home-product-name {
+                font-size: 13px;
+                color: #333;
+                margin-bottom: 10px;
                 font-weight: 600;
-                color: #1e293b;
-                margin-bottom: 8px;
-                height: 40px;
-                overflow: hidden;
+                line-height: 1.4;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;
+                overflow: hidden;
+                width: 100%;
             }
 
-            /* Price */
-            .price,
-            .price-row .price {
-                color: #e11d48;
-                font-size: 16px;
-                font-weight: 800;
+            .home-product-price {
+                color: #d0021b;
+                font-weight: bold;
+                font-size: 15px;
             }
 
-            /* Discount badge (kept but scoped visually inside card) */
+            .home-product-old-price {
+                text-decoration: line-through;
+                color: #94a3b8;
+                font-size: 12px;
+                margin-left: 5px;
+                font-weight: normal;
+            }
+
             .discount-badge {
                 position: absolute;
-                top: 12px;
-                left: 12px;
+                top: 25px;
+                left: 25px;
                 background: #d0021b;
                 color: #fff;
                 padding: 4px 8px;
                 font-size: 11px;
-                font-weight: 700;
+                font-weight: bold;
                 border-radius: 4px;
                 z-index: 2;
             }
 
-            @media (max-width: 1200px) {
-                .product-grid { grid-template-columns: repeat(3, 1fr); }
+            .rating-stars {
+                text-align: center;
+                margin-bottom: 40px;
+                color: #d0021b;
+                font-size: 18px;
+                letter-spacing: 5px;
             }
-            @media (max-width: 860px) {
-                .product-grid { grid-template-columns: repeat(2, 1fr); }
-            }
-            @media (max-width: 620px) {
-                .product-grid { grid-template-columns: 1fr; }
+
+            .rating-text {
+                text-align: center;
+                font-size: 13px;
+                color: #666;
+                margin-bottom: 10px;
             }
         </style>
     </head>
 
     <body>
-
         <header class="main-header">
             <div class="header-top container">
-                <a href="./home.html" class="logo">LAPTECH</a>
-
+                <a href="home.html" class="logo">LAPTECH</a>
                 <div class="search-bar">
                     <input type="text" id="home-search-input" placeholder="Tìm kiếm sản phẩm...">
                     <button type="button" id="home-search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
-
                 <div class="header-actions">
                     <div class="action-item">
                         <i class="fa-regular fa-user"></i>
@@ -135,65 +163,47 @@
                         </span>
                     </div>
                     <a href="/pages/CartPage/index.html" class="action-item" id="home-cart-btn" style="display: none;">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span>GIỎ HÀNG</span>
+                        <i class="fa-solid fa-cart-shopping"></i><span>GIỎ HÀNG</span>
                     </a>
                 </div>
             </div>
 
             <nav class="main-nav">
                 <ul class="container">
-                    <li><a href="#">DANH MỤC</a></li>
-                    <li><a href="#">LAPTOP</a></li>
-                    <li><a href="#">PHỤ KIỆN</a></li>
-                    <li><a href="promotion.html">ƯU ĐÃI</a></li>
-                    <li><a href="#">HỖ TRỢ</a></li>
+                    <li><a href="./home.html">TRANG CHỦ</a></li>
+                    <li><a href="./index.html">LAPTOP</a></li>
+                    <li><a href="./index.html">PHỤ KIỆN</a></li>
+                    <li><a href="./promotion.html">ƯU ĐÃI</a></li>
+                    <li><a href="./index.html">HỖ TRỢ</a></li>
                 </ul>
             </nav>
         </header>
 
-        <main class="main-container">
+        <main>
+            <section class="home-banner">
+                <img id="main-banner-img" src="./assets/image.png" alt="Laptech Banner Khuyến Mãi"
+                    onerror="this.src='https://via.placeholder.com/1920x400?text=LAPTECH+PROMOTION'">
+            </section>
 
-            <!-- FILTER SIDEBAR -->
-            <div class="filter-sidebar">
+            <div class="home-container">
+                <section>
+                    <h2 class="section-title"><span>SẢN PHẨM ƯU ĐÃI</span></h2>
 
-                <!-- BỘ LỌC -->
-                <div class="filter-section">
-
-                    <h2 class="filter-title">Bộ Lọc Tìm Kiếm</h2>
-
-                    <!-- THƯƠNG HIỆU -->
-                    <div class="filter-group" id="brand-filter-group">
-                        <p class="group-title">Thương Hiệu</p>
-                        <label><input type="checkbox" class="brand-checkbox" value="HP"> HP</label>
-                        <label><input type="checkbox" class="brand-checkbox" value="Dell"> Dell</label>
-                        <label><input type="checkbox" class="brand-checkbox" value="Lenovo"> Lenovo</label>
-                        <label><input type="checkbox" class="brand-checkbox" value="ASUS"> ASUS</label>
-                        <label><input type="checkbox" class="brand-checkbox" value="Acer"> Acer</label>
-                        <label><input type="checkbox" class="brand-checkbox" value="MacBook"> MacBook</label>
+                    <div class="home-product-grid product-grid" id="discount-product-grid">
+                        <div
+                            style="grid-column: 1/-1; text-align: center; padding: 60px 0; font-size: 16px; color: #666;">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu sản phẩm ưu đãi...
+                        </div>
                     </div>
-                    <button class="clear-btn" id="home-clear-btn">
-                        XÓA TẤT CẢ
-                    </button>
+                </section>
 
-                </div>
-
-            </div>
-
-            <!-- CONTENT BODY WRAPPER -->
-            <div class="main-content-wrapper" style="flex: 1; display: flex; flex-direction: column;">
-                <!-- PRODUCT GRID -->
-                <div class="product-grid" id="homepage-product-grid">
-                    <!-- Dữ liệu sản phẩm load động bằng main.js -->
-                </div>
-
-                <!-- PAGINATION -->
-                <div id="homepage-pagination" class="pagination"
-                    style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 30px; margin-bottom: 30px;">
-                    <!-- Nút phân trang load động bằng JS -->
+                <p class="rating-text">Nội dung đánh giá, góp ý người dùng về sản phẩm, dịch vụ của hệ thống Laptech</p>
+                <div class="rating-stars">
+                    <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i
+                        class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i
+                        class="fa-regular fa-star"></i>
                 </div>
             </div>
-
         </main>
 
         <footer class="main-footer">
@@ -205,8 +215,7 @@
                         <li><i class="fa-solid fa-phone"></i> 0436.395.614 (phụ)</li>
                         <li><i class="fa-solid fa-envelope"></i> laptech123@gmail.com</li>
                         <li><i class="fa-solid fa-location-dot"></i> Đường Nghiêm Xuân Yêm, Phường Đại Kim, Quận Hoàng
-                            Mai,
-                            TP.Hà Nội</li>
+                            Mai, TP.Hà Nội</li>
                         <li><i class="fa-regular fa-clock"></i> Thứ 2 - CN: 8h00-24h00</li>
                     </ul>
                     <div class="social-icons">
@@ -262,6 +271,8 @@
         </footer>
 
         <script src="js/main.js"></script>
+
+        <script src="js/promotion.js"></script>
     </body>
 
 </html>

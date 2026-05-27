@@ -252,150 +252,131 @@
         <script src="./js/sidebar.js"></script>
 
         <script>
-            // ----------------------------------------------------------------
-            // BƯỚC 1: DỮ LIỆU MẪU CÓ CHỨA DANH SÁCH SẢN PHẨM BÊN TRONG ĐƠN HÀNG
-            // ----------------------------------------------------------------
-            const mockAccounts = [{}, {}, {}, {}, {}];
+            (async function () {
+                const token = localStorage.getItem('token');
+                if (!token) return;
 
-            // Giả lập cấu trúc đơn hàng thực tế (Mỗi đơn chứa danh sách mặt hàng 'items')
-            const mockOrders = [
-                {
-                    id: '#45FB422E', customer: 'Hoàng Thị Thao', date: '2026-05-26', status: 'CANCELED',
-                    items: [{ name: 'Laptop ASUS VivoBook', qty: 2, price: 11995000 }]
-                },
-                {
-                    id: '#6DD7B73B', customer: 'Hoàng Thị Thao', date: '2026-05-26', status: 'CONFIRMED',
-                    items: [{ name: 'Laptop HP 15 fc0085AU', qty: 1, price: 12000000 }]
-                },
-                {
-                    id: '#A1B2C3D4', customer: 'Jenny Wilson', date: '2026-04-12', status: 'CONFIRMED',
-                    items: [
-                        { name: 'Laptop HP 15 fc0085AU', qty: 2, price: 12000000 },
-                        { name: 'Chuột Logitech Không dây', qty: 1, price: 250000 }
-                    ]
-                },
-                {
-                    id: '#X9Y8Z7W6', customer: 'Nguyễn Văn A', date: '2026-03-05', status: 'CONFIRMED',
-                    items: [{ name: 'Laptop Dell Inspiron 15', qty: 1, price: 15500000 }]
-                }
-            ];
-
-            // ----------------------------------------------------------------
-            // BƯỚC 2: TÍNH TOÁN KPI
-            // ----------------------------------------------------------------
-            document.getElementById('kpi-total-accounts').innerText = mockAccounts.length;
-
-            // Chỉ lấy những đơn hàng ĐÃ DUYỆT (CONFIRMED)
-            const confirmedOrders = mockOrders.filter(order => order.status === 'CONFIRMED');
-
-            let totalIncome = 0;
-            let totalProductsSold = 0;
-            let monthlySales = Array(12).fill(0); // Mảng đếm sp theo 12 tháng
-
-            // Từ điển lưu số liệu từng sản phẩm để tìm ra món bán chạy nhất
-            const productStats = {};
-
-            // Duyệt qua từng đơn hàng Đã Duyệt
-            confirmedOrders.forEach(order => {
-                let orderTotal = 0;
-
-                // Lấy tháng của đơn hàng (VD: "2026-05-26" -> Tháng 5 -> index là 4)
-                const monthStr = order.date.split('-')[1];
-                const monthIndex = monthStr ? parseInt(monthStr) - 1 : 0;
-
-                // Duyệt qua từng sản phẩm trong đơn hàng
-                if (order.items) {
-                    order.items.forEach(item => {
-                        const itemRevenue = item.qty * item.price;
-                        orderTotal += itemRevenue;
-                        totalProductsSold += item.qty;
-
-                        // Cộng dồn vào tháng
-                        monthlySales[monthIndex] += item.qty;
-
-                        // Thống kê từng mặt hàng để tìm Best Seller
-                        if (!productStats[item.name]) {
-                            productStats[item.name] = { name: item.name, qty: 0, revenue: 0 };
-                        }
-                        productStats[item.name].qty += item.qty;
-                        productStats[item.name].revenue += itemRevenue;
+                // Fetch all orders (admin endpoint)
+                let orders = [];
+                try {
+                    const res = await fetch('/api/orders', {
+                        headers: { 'Authorization': 'Bearer ' + token }
                     });
+                    if (res.ok) orders = await res.json();
+                    else console.warn('Không thể lấy danh sách đơn hàng:', res.status);
+                } catch (e) {
+                    console.error('Lỗi khi gọi API orders:', e);
                 }
 
-                totalIncome += orderTotal;
-                // Gán lại tổng tiền vào đơn (dùng để hiển thị ở bảng)
-                order.totalValue = orderTotal;
-            });
-
-            // Cập nhật giao diện KPI
-            document.getElementById('kpi-total-income').innerText = totalIncome.toLocaleString('vi-VN') + ' đ';
-            document.getElementById('kpi-total-products').innerText = totalProductsSold;
-
-            // ----------------------------------------------------------------
-            // BƯỚC 3: TÌM SẢN PHẨM NỔI BẬT NHẤT (Nằm trong đơn đã duyệt)
-            // ----------------------------------------------------------------
-            let bestProduct = null;
-            let maxQty = 0;
-
-            for (const key in productStats) {
-                if (productStats[key].qty > maxQty) {
-                    maxQty = productStats[key].qty;
-                    bestProduct = productStats[key];
+                // Try fetching users count for KPI 'Tài Khoản Mới' when allowed
+                try {
+                    const resUsers = await fetch('/api/users?limit=1&role=CUSTOMER', { headers: { 'Authorization': 'Bearer ' + token } });
+                    if (resUsers.ok) {
+                        const usersData = await resUsers.json();
+                        const totalCustomers = usersData.pagination?.totalUsers ?? (usersData.users ? usersData.users.length : 0);
+                        document.getElementById('kpi-total-accounts').innerText = totalCustomers;
+                    }
+                } catch (e) {
+                    // ignore if not authorized
                 }
-            }
 
-            if (bestProduct) {
-                document.getElementById('best-product-name').innerText = bestProduct.name;
-                document.getElementById('best-product-qty').innerText = bestProduct.qty;
-                document.getElementById('best-product-revenue').innerText = bestProduct.revenue.toLocaleString('vi-VN') + ' đ';
-                // Bạn có thể update thêm hình ảnh nếu trong 'items' có thuộc tính img
-                // document.getElementById('best-product-img').src = bestProduct.img;
-            } else {
-                document.getElementById('best-product-name').innerText = "Chưa có sản phẩm bán ra";
-            }
+                // Try fetching best selling product by totalSale
+                let bestProductFromCatalog = null;
+                try {
+                    const resBest = await fetch('/api/products?limit=1&sortBy=totalSale', {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    if (resBest.ok) {
+                        const body = await resBest.json();
+                        bestProductFromCatalog = body.products?.[0] ?? null;
+                    }
+                } catch (e) {
+                    console.warn('Không thể lấy sản phẩm bán chạy nhất:', e);
+                }
 
-            // ----------------------------------------------------------------
-            // BƯỚC 4: RENDER BẢNG ĐƠN HÀNG GẦN ĐÂY
-            // ----------------------------------------------------------------
-            const orderTableBody = document.getElementById('dashboard-order-list');
-            orderTableBody.innerHTML = '';
+                // Compute KPIs based on CONFIRMED orders
+                const confirmedOrders = orders.filter(o => o.status === 'CONFIRMED');
 
-            mockOrders.slice(0, 5).forEach(order => {
-                const statusText = order.status === 'CONFIRMED' ? 'Đã Duyệt' : (order.status === 'PENDING' ? 'Chờ Duyệt' : 'Đã Hủy');
-                // Nếu đơn chưa duyệt có thể ko có totalValue được tính ở trên, ta tính nhanh lại
-                const orderMoney = order.totalValue || (order.items ? order.items.reduce((sum, it) => sum + (it.qty * it.price), 0) : 0);
+                let totalIncome = 0;
+                let totalProductsSold = 0;
+                const monthlySales = Array(12).fill(0);
+                const productStats = {};
 
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                <td style="font-weight: 600; color: #1e3a8a;">${order.id}</td>
-                <td>${order.customer}</td>
-                <td>${order.date}</td>
-                <td style="font-weight: 600; color: #dc2626;">${orderMoney.toLocaleString('vi-VN')} đ</td>
-                <td><span class="status-badge status-${order.status}">${statusText}</span></td>
-            `;
-                orderTableBody.appendChild(tr);
-            });
+                confirmedOrders.forEach(order => {
+                    // order.totalPrice is stored in DB
+                    const orderValue = order.totalPrice || (order.products ? order.products.reduce((s, p) => s + (p.price * p.quantity), 0) : 0);
+                    totalIncome += orderValue;
 
-            // ----------------------------------------------------------------
-            // BƯỚC 5: VẼ BIỂU ĐỒ DOANH SỐ
-            // ----------------------------------------------------------------
-            const ctxSales = document.getElementById('salesChart').getContext('2d');
-            new Chart(ctxSales, {
-                type: 'line',
-                data: {
-                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
-                    datasets: [{
-                        label: 'Số SP Bán Ra',
-                        data: monthlySales, // Lấy mảng dữ liệu đã tính dồn
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-            });
+                    const orderDate = order.orderDate ? new Date(order.orderDate) : (order.createdAt ? new Date(order.createdAt) : null);
+                    const monthIndex = orderDate ? orderDate.getMonth() : 0;
+
+                    if (order.products && Array.isArray(order.products)) {
+                        order.products.forEach(p => {
+                            totalProductsSold += p.quantity || 0;
+                            monthlySales[monthIndex] += p.quantity || 0;
+
+                            if (!productStats[p.name]) productStats[p.name] = { name: p.name, qty: 0, revenue: 0 };
+                            productStats[p.name].qty += p.quantity || 0;
+                            productStats[p.name].revenue += (p.price || 0) * (p.quantity || 0);
+                        });
+                    }
+                });
+
+                document.getElementById('kpi-total-income').innerText = totalIncome.toLocaleString('vi-VN') + ' đ';
+                document.getElementById('kpi-total-products').innerText = totalProductsSold;
+
+                // Best seller by total purchases
+                let bestProduct = null;
+                if (bestProductFromCatalog) {
+                    bestProduct = {
+                        name: bestProductFromCatalog.name,
+                        qty: bestProductFromCatalog.totalSale || 0,
+                        revenue: (bestProductFromCatalog.basePrice || 0) * (bestProductFromCatalog.totalSale || 0)
+                    };
+                } else {
+                    let maxQty = 0;
+                    for (const k in productStats) {
+                        if (productStats[k].qty > maxQty) { maxQty = productStats[k].qty; bestProduct = productStats[k]; }
+                    }
+                }
+
+                if (bestProduct && bestProduct.qty > 0) {
+                    document.getElementById('best-product-name').innerText = bestProduct.name;
+                    document.getElementById('best-product-qty').innerText = bestProduct.qty;
+                    document.getElementById('best-product-revenue').innerText = bestProduct.revenue.toLocaleString('vi-VN') + ' đ';
+                } else {
+                    document.getElementById('best-product-name').innerText = 'Chưa có sản phẩm bán ra';
+                }
+
+                // Render recent confirmed orders (most recent first)
+                const orderTableBody = document.getElementById('dashboard-order-list');
+                orderTableBody.innerHTML = '';
+                confirmedOrders.slice(0, 5).forEach(order => {
+                    const orderMoney = order.totalPrice || (order.products ? order.products.reduce((s, p) => s + (p.price * p.quantity), 0) : 0);
+                    const orderDateStr = order.orderDate ? new Date(order.orderDate).toLocaleDateString('vi-VN') : (order.createdAt ? new Date(order.createdAt).toLocaleDateString('vi-VN') : '');
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight: 600; color: #1e3a8a;">${order._id || order.id}</td>
+                        <td>${(order.customerId && (order.customerId.fullName || order.customerId.name)) || (order.customerName || '')}</td>
+                        <td>${orderDateStr}</td>
+                        <td style="font-weight: 600; color: #dc2626;">${orderMoney.toLocaleString('vi-VN')} đ</td>
+                        <td><span class="status-badge status-${order.status}">Đã Duyệt</span></td>
+                    `;
+                    orderTableBody.appendChild(tr);
+                });
+
+                // Draw chart
+                const ctxSales = document.getElementById('salesChart').getContext('2d');
+                new Chart(ctxSales, {
+                    type: 'line',
+                    data: {
+                        labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                        datasets: [{ label: 'Số SP Bán Ra', data: monthlySales, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, tension: 0.4, fill: true }]
+                    },
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+                });
+            })();
         </script>
     </body>
 
