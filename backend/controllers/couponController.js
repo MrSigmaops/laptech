@@ -98,6 +98,23 @@ async function getCoupons(req, res) {
     }
 }
 
+async function getActiveCoupons(req, res) {
+    try {
+        const now = new Date();
+        const coupons = await Coupon.find({
+            status: 'ACTIVE',
+            $and: [
+                { $or: [{ startDate: { $exists: false } }, { startDate: { $lte: now } }] },
+                { $or: [{ endDate: { $exists: false } }, { endDate: { $gte: now } }] }
+            ]
+        }).sort({ createdAt: -1 });
+        res.json({ coupons });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Không thể tải danh sách mã giảm giá' });
+    }
+}
+
 async function getCouponById(req, res) {
     try {
         const coupon = await Coupon.findById(req.params.id);
@@ -201,6 +218,7 @@ async function validateCoupon(req, res) {
 module.exports = {
     createCoupon,
     getCoupons,
+    getActiveCoupons,
     getCouponById,
     updateCoupon,
     deleteCoupon,

@@ -14,6 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    const btnAddPromotion = document.getElementById('btn-add-promotion');
+    if (btnAddPromotion) {
+        btnAddPromotion.addEventListener('click', () => {
+            window.location.href = 'productModal.html?action=createPromotion';
+        });
+    }
+
     // 3. Bộ lọc thương hiệu
     const filterBrand = document.getElementById('filter-brand');
     if (filterBrand) {
@@ -105,8 +112,8 @@ function renderProductTable(products) {
     productTableBody.innerHTML = products.map(product => {
         // Định dạng giá bán: 14.790.000 đ
         const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.basePrice);
-        const shortDesc = product.description && product.description.length > 60 
-            ? product.description.substring(0, 57) + '...' 
+        const shortDesc = product.description && product.description.length > 60
+            ? product.description.substring(0, 57) + '...'
             : (product.description || '-');
 
         return `

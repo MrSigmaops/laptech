@@ -157,14 +157,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     method = 'PUT';
                 }
 
-                const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(bodyData)
-                });
+                let response;
+                if (action === 'createPromotion') {
+                    // Create promotion record
+                    const promoBody = Object.assign({}, bodyData, {
+                        discountPercent: Number(document.getElementById('product-discount-percent')?.value || 0)
+                    });
+                    response = await fetch('/api/promotions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(promoBody)
+                    });
+                } else {
+                    response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(bodyData)
+                    });
+                }
 
                 const result = await response.json();
 
@@ -173,8 +189,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                alert(action === 'create' ? 'Thêm sản phẩm mới thành công!' : 'Cập nhật sản phẩm thành công!');
-                window.location.href = 'product.html';
+                if (action === 'createPromotion') {
+                    alert('Thêm sản phẩm ưu đãi thành công!');
+                    window.location.href = '/promotion.html';
+                } else {
+                    alert(action === 'create' ? 'Thêm sản phẩm mới thành công!' : 'Cập nhật sản phẩm thành công!');
+                    window.location.href = 'product.html';
+                }
 
             } catch (error) {
                 console.error('Lỗi khi lưu sản phẩm:', error);
@@ -209,6 +230,21 @@ async function setupProductFormMode(action, productId, token) {
         headerName.innerText = 'Sản Phẩm Mới';
         headerBrand.innerText = 'Chọn Thương Hiệu bên dưới';
         headerPrice.innerText = 'Nhập giá bán bên dưới';
+        return;
+    }
+    if (action === 'createPromotion') {
+        pageTitle.innerText = 'Thêm Sản Phẩm Ưu Đãi';
+        breadcrumbText.innerText = 'Sản Phẩm / Thêm Ưu Đãi';
+        btnSubmit.innerText = 'Lưu ưu đãi';
+        btnSubmit.style.background = '#14b8a6';
+
+        headerName.innerText = 'Sản Phẩm Ưu Đãi';
+        headerBrand.innerText = 'Nhập thông tin ưu đãi';
+        headerPrice.innerText = 'Nhập giá gốc + phần trăm giảm';
+
+        // Hiện trường giảm giá
+        const promoGroup = document.getElementById('promo-discount-group');
+        if (promoGroup) promoGroup.style.display = 'block';
         return;
     }
 
@@ -301,20 +337,20 @@ function validateImageDimensions(file, minWidth = 300, minHeight = 300) {
             const img = new Image();
             img.onload = function () {
                 if (img.width < minWidth || img.height < minHeight) {
-                    resolve({ 
-                        valid: false, 
-                        message: `Kích thước hình ảnh không hợp lệ (${img.width}x${img.height}px). Yêu cầu tối thiểu là ${minWidth}x${minHeight}px để đảm bảo chất lượng lấp đầy khung hình!` 
+                    resolve({
+                        valid: false,
+                        message: `Kích thước hình ảnh không hợp lệ (${img.width}x${img.height}px). Yêu cầu tối thiểu là ${minWidth}x${minHeight}px để đảm bảo chất lượng lấp đầy khung hình!`
                     });
                 } else {
                     resolve({ valid: true, width: img.width, height: img.height });
                 }
             };
-            img.onerror = function() {
+            img.onerror = function () {
                 resolve({ valid: false, message: 'Định dạng tệp tin hình ảnh không hợp lệ!' });
             };
             img.src = e.target.result;
         };
-        reader.onerror = function() {
+        reader.onerror = function () {
             resolve({ valid: false, message: 'Không thể đọc tệp tin hình ảnh!' });
         };
         reader.readAsDataURL(file);

@@ -4,6 +4,7 @@ const PHONE_REGEX = /^(0|\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0
 let currentCoupon = null;
 let currentDiscount = 0;
 let currentSubTotal = 0;
+let availableCoupons = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
@@ -32,6 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderCheckoutItems(checkoutItems);
+    fetchAvailableCoupons();
+
+    const couponSelect = document.getElementById('order-coupon-select');
+    if (couponSelect) {
+        couponSelect.addEventListener('change', () => {
+            const selectedCode = couponSelect.value;
+            const couponInput = document.getElementById('order-coupon-code');
+            if (couponInput) couponInput.value = selectedCode;
+            applyCoupon(checkoutItems);
+        });
+    }
 
     const btnConfirm = document.getElementById('btn-confirm-order');
     if (btnConfirm) {
@@ -56,6 +68,46 @@ function prefillCustomerInfo(user) {
     if (nameInput) nameInput.value = user.fullName || '';
     if (phoneInput) phoneInput.value = user.phoneNumber || '';
     if (emailInput) emailInput.value = user.email || '';
+}
+
+async function fetchAvailableCoupons() {
+    try {
+        const response = await fetch('/api/coupons/active');
+        const data = await response.json();
+        if (!response.ok) {
+            console.warn('Không thể lấy danh sách mã giảm giá:', data.message);
+            return;
+        }
+        availableCoupons = data.coupons || [];
+        populateCouponSelect();
+    } catch (error) {
+        console.error('Lỗi khi tải mã khuyến mãi:', error);
+    }
+}
+
+function populateCouponSelect() {
+    const select = document.getElementById('order-coupon-select');
+    if (!select) return;
+    select.innerHTML = '<option value="">-- Chọn mã khuyến mãi --</option>';
+    // Filter coupons that meet subtotal condition
+    const applicable = availableCoupons.filter(c => (c.minOrderValue || 0) <= currentSubTotal);
+    if (applicable.length === 0) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.innerText = 'Không có mã phù hợp';
+        opt.disabled = true;
+        select.appendChild(opt);
+        return;
+    }
+
+    applicable.forEach(coupon => {
+        const option = document.createElement('option');
+        option.value = coupon.code;
+        const valText = coupon.type === 'PERCENT' ? `${coupon.value}%` : new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(coupon.value);
+        const minText = coupon.minOrderValue ? ` (Tối thiểu ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(coupon.minOrderValue)})` : '';
+        option.innerText = `${coupon.code} - ${coupon.name} - ${valText}${minText}`;
+        select.appendChild(option);
+    });
 }
 
 function renderCheckoutItems(items) {
@@ -98,6 +150,8 @@ function renderCheckoutItems(items) {
         const finalTotal = Math.max(0, currentSubTotal - currentDiscount);
         totalPriceEl.innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(finalTotal);
     }
+    // Update coupon select (available coupons may depend on subtotal)
+    populateCouponSelect();
 }
 
 async function applyCoupon(items) {

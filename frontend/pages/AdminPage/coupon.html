@@ -330,6 +330,7 @@
                             <div class="form-group"><label>Đối Tượng</label><select id="add-target">
                                     <option>Vận chuyển</option>
                                     <option>Sản phẩm</option>
+                                    <option>Đơn hàng</option>
                                 </select></div>
                             <div class="form-group"><label>Loại</label><select id="add-type">
                                     <option>%</option>
@@ -348,6 +349,8 @@
                             </div>
                             <div class="form-group"><label>Giờ Kết Thúc</label><input type="datetime-local"
                                     id="add-end"></div>
+                            <div class="form-group"><label>Giá Trị Đơn Hàng Tối Thiểu</label><input type="number"
+                                    id="add-min-order" placeholder="Ví dụ: 2000000"></div>
                         </div>
                         <button class="add-btn" onclick="addNewCoupon()">Thêm <i class="fa-solid fa-plus"></i></button>
                         <div style="clear: both;"></div>
@@ -390,6 +393,7 @@
                                     <select id="detail-target">
                                         <option>Vận chuyển</option>
                                         <option>Sản phẩm</option>
+                                        <option>Đơn hàng</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -403,6 +407,10 @@
                                     <label>Mức Độ</label>
                                     <input type="number" id="detail-value">
                                 </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label>Giá Trị Đơn Hàng Tối Thiểu</label>
+                                <input type="number" id="detail-min-order" placeholder="Ví dụ: 2000000">
                             </div>
                             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
                                 <div class="form-group"><label>Giờ Bắt Đầu</label><input type="datetime-local"
@@ -494,14 +502,10 @@
         <script src="./js/sidebar.js"></script>
 
         <script>
-            let coupons = [
-                { id: 'GG_285723', status: 'Đang Kích Hoạt', start: '00:00 25/11/2024', end: '23:59 26/11/2024', name: 'Free Ship', target: 'Vận chuyển', type: '%', value: '100', desc: 'Miễn phí vận chuyển cho đơn hàng trên 2.000.000 đ', qty: 'Không Giới Hạn' },
-                { id: 'GG_285724', status: 'Chưa Hoạt Động', start: '00:00 25/12/2024', end: '23:59 26/12/2024', name: 'Giảm 50K', target: 'Sản phẩm', type: 'VND', value: '50000', desc: 'Giảm trực tiếp 50k vào sản phẩm', qty: '100' }
-            ];
-
             const couponTargetMap = {
                 'Vận chuyển': 'SHIPPING',
-                'Sản phẩm': 'PRODUCT'
+                'Sản phẩm': 'PRODUCT',
+                'Đơn hàng': 'ORDER'
             };
 
             const couponTargetLabel = {
@@ -585,7 +589,8 @@
                     status: 'ACTIVE',
                     startDate: document.getElementById('add-start').value || undefined,
                     endDate: document.getElementById('add-end').value || undefined,
-                    quantity: Number(document.getElementById('add-qty').value) || 0
+                    quantity: Number(document.getElementById('add-qty').value) || 0,
+                    minOrderValue: Number(document.getElementById('add-min-order').value) || 0
                 };
 
                 try {
@@ -628,6 +633,7 @@
                 document.getElementById('detail-start').value = coupon.startDate ? new Date(coupon.startDate).toISOString().slice(0, 16) : '';
                 document.getElementById('detail-end').value = coupon.endDate ? new Date(coupon.endDate).toISOString().slice(0, 16) : '';
                 document.getElementById('detail-qty').value = coupon.quantity || '';
+                document.getElementById('detail-min-order').value = coupon.minOrderValue || '';
                 document.getElementById('detail-status').value = coupon.status || 'ACTIVE';
 
                 document.getElementById('view-list').style.display = 'none';
@@ -647,7 +653,8 @@
                     status: document.getElementById('detail-status').value || 'ACTIVE',
                     startDate: document.getElementById('detail-start').value || undefined,
                     endDate: document.getElementById('detail-end').value || undefined,
-                    quantity: Number(document.getElementById('detail-qty').value) || 0
+                    quantity: Number(document.getElementById('detail-qty').value) || 0,
+                    minOrderValue: Number(document.getElementById('detail-min-order').value) || 0
                 };
 
                 try {
