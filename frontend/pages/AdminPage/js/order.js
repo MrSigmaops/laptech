@@ -26,7 +26,7 @@ async function fetchAdminOrders() {
     const token = localStorage.getItem('token');
     const tbody = document.getElementById('order-table-body');
     if (tbody) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center;">Đang tải dữ liệu đơn hàng...</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center;">Đang tải dữ liệu đơn hàng...</td></tr>`;
     }
 
     try {
@@ -54,7 +54,7 @@ async function fetchAdminOrders() {
     } catch (error) {
         console.error('Lỗi khi tải đơn hàng:', error);
         if (tbody) {
-            tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: red;">Lỗi kết nối máy chủ!</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: red;">Lỗi kết nối máy chủ!</td></tr>`;
         }
     }
 }
@@ -85,7 +85,7 @@ function renderOrderTable() {
     });
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center;">Không tìm thấy đơn hàng nào phù hợp.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center;">Không tìm thấy đơn hàng nào phù hợp.</td></tr>`;
         return;
     }
 
@@ -111,6 +111,10 @@ function renderOrderTable() {
 
         const employeeName = order.employeeId ? order.employeeId.fullName : '-';
 
+        // Badge trạng thái thanh toán
+        const isPaid = order.paymentStatus === 'PAID';
+        const paymentBadge = `<span class="status-badge ${isPaid ? 'payment-paid' : 'payment-unpaid'}">${isPaid ? 'Đã TT' : 'Chưa TT'}</span>`;
+
         // Xây dựng các nút thao tác
         let actionsHtml = `
             <button onclick="viewOrderDetails('${order._id}')" style="background: none; border: none; cursor: pointer; color: #0076ff; font-size: 16px; margin-right: 8px;" title="Xem chi tiết đơn hàng"><i class="fa-regular fa-eye"></i></button>
@@ -131,6 +135,7 @@ function renderOrderTable() {
                 <td style="padding: 12px 15px; font-weight: 600; color: #a52424;">${formattedTotal}</td>
                 <td style="padding: 12px 15px; font-size: 13px;">${formattedDate}</td>
                 <td style="padding: 12px 15px;"><span class="status-badge ${badgeClass}">${statusText}</span></td>
+                <td style="padding: 12px 15px;">${paymentBadge}</td>
                 <td style="padding: 12px 15px; font-size: 13px; font-weight: 500;">${employeeName}</td>
                 <td style="padding: 12px 15px; text-align: center;">${actionsHtml}</td>
             </tr>
@@ -150,8 +155,15 @@ function viewOrderDetails(orderId) {
 
     let payMethodText = 'COD';
     if (order.paymentMethod === 'CREDIT_CARD') payMethodText = 'Thẻ tín dụng';
-    else if (order.paymentMethod === 'INTERNET_BANKING') payMethodText = 'Internet Banking';
+    else if (order.paymentMethod === 'INTERNET_BANKING') payMethodText = 'Internet Banking (VNPAY)';
     document.getElementById('detail-payment-method').innerText = payMethodText;
+
+    const isPaid = order.paymentStatus === 'PAID';
+    const paymentStatusEl = document.getElementById('detail-payment-status');
+    if (paymentStatusEl) {
+        paymentStatusEl.innerHTML = `<span class="status-badge ${isPaid ? 'payment-paid' : 'payment-unpaid'}">${isPaid ? '✓ Đã thanh toán' : '✗ Chưa thanh toán'}</span>`;
+    }
+
     document.getElementById('detail-note').innerText = order.note || 'Không có';
 
     const formattedSub = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.subTotal);

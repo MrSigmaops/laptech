@@ -68,6 +68,11 @@ const orderSchema = new mongoose.Schema({
         enum: ['CREDIT_CARD', 'INTERNET_BANKING', 'COD'],
         default: 'COD'
     },
+    paymentStatus: {
+        type: String,
+        enum: ['PAID', 'UNPAID'],
+        default: 'UNPAID'
+    },
     city: {
         type: String,
         required: true

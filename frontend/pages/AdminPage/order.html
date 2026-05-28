@@ -22,6 +22,8 @@
         .status-pending { background-color: #fef3c7; color: #d97706; }
         .status-confirmed { background-color: #dcfce7; color: #15803d; }
         .status-canceled { background-color: #fee2e2; color: #b91c1c; }
+        .payment-paid { background-color: #dcfce7; color: #15803d; }
+        .payment-unpaid { background-color: #fee2e2; color: #b91c1c; }
 
         /* Modal Details Styles */
         .modal {
@@ -116,6 +118,7 @@
                             <th style="padding: 12px 15px; text-align: left;">Giá Trị</th>
                             <th style="padding: 12px 15px; text-align: left;">Ngày Đặt</th>
                             <th style="padding: 12px 15px; text-align: left;">Trạng Thái</th>
+                            <th style="padding: 12px 15px; text-align: left;">Thanh Toán</th>
                             <th style="padding: 12px 15px; text-align: left;">Người Duyệt</th>
                             <th style="padding: 12px 15px; text-align: center; width: 150px;">Thao Tác</th>
                         </tr>
@@ -145,6 +148,7 @@
                     </div>
                     <div>
                         <p><strong>Thanh toán:</strong> <span id="detail-payment-method"></span></p>
+                        <p><strong>Trạng thái TT:</strong> <span id="detail-payment-status"></span></p>
                         <p><strong>Ghi chú:</strong> <span id="detail-note"></span></p>
                         <p><strong>Tổng tiền hàng:</strong> <span id="detail-subtotal"></span></p>
                         <p><strong>Thực trả:</strong> <span id="detail-total-price" style="font-weight: 700; color: #dc2626;"></span></p>

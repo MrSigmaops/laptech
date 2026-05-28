@@ -275,10 +275,35 @@ async function submitOrder(checkoutItems) {
             return;
         }
 
-        alert('Đặt hàng thành công!');
         localStorage.removeItem('checkoutItems');
         localStorage.removeItem('isBuyNow');
 
+        // Nếu chọn Internet Banking → gọi API lấy URL VNPAY rồi redirect
+        if (paymentMethod === 'INTERNET_BANKING') {
+            try {
+                const vnpRes = await fetch('/api/payments/vnpay-create', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ orderId: result.order._id })
+                });
+                const vnpData = await vnpRes.json();
+                if (vnpRes.ok && vnpData.paymentUrl) {
+                    window.location.href = vnpData.paymentUrl;
+                    return;
+                }
+                alert(vnpData.message || 'Không thể tạo liên kết thanh toán VNPAY!');
+            } catch (err) {
+                console.error('Lỗi khi tạo URL VNPAY:', err);
+                alert('Lỗi kết nối khi tạo liên kết thanh toán!');
+            }
+            window.location.href = '../OrderHistory/index.html';
+            return;
+        }
+
+        alert('Đặt hàng thành công!');
         window.location.href = '../OrderHistory/index.html';
     } catch (error) {
         console.error('Lỗi khi đặt hàng:', error);
