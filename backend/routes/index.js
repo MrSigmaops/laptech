@@ -8,5 +8,6 @@ router.use('/orders', require('./orderRoutes'));
 router.use('/coupons', require('./couponRoutes'));
 router.use('/promotions', require('./promotionRoutes'));
 router.use('/payments', require('./paymentRoutes'));
+router.use('/reviews', require('./reviewRoutes'));
 
 module.exports = router;

@@ -1,283 +1,276 @@
 <!DOCTYPE html>
 <html lang="vi">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Xác nhận đơn hàng - LAPTECH</title>
-        <meta name="description"
-            content="Xác nhận đơn hàng của bạn tại LAPTECH. Điền thông tin giao hàng và chọn phương thức thanh toán để mua laptop chính hãng nhanh chóng.">
-        <meta property="og:title" content="Xác nhận đơn hàng - LAPTECH">
-        <meta property="og:description"
-            content="Xác nhận đơn hàng của bạn tại LAPTECH. Điền thông tin giao hàng và chọn phương thức thanh toán để mua laptop chính hãng nhanh chóng.">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xác nhận đơn hàng - LAPTECH</title>
+    <meta name="description"
+        content="Xác nhận đơn hàng của bạn tại LAPTECH. Điền thông tin giao hàng và chọn phương thức thanh toán để mua laptop chính hãng nhanh chóng.">
+    <meta property="og:title" content="Xác nhận đơn hàng - LAPTECH">
+    <meta property="og:description"
+        content="Xác nhận đơn hàng của bạn tại LAPTECH. Điền thông tin giao hàng và chọn phương thức thanh toán để mua laptop chính hãng nhanh chóng.">
 
-        <link rel="stylesheet" href="../../style.css" />
-        <link rel="stylesheet" href="order.css">
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="order.css">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    </head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
 
-    <body>
+<body>
 
-        <!-- HEADER -->
-        <header class="main-header">
-            <div class="header-top container">
-                <a href="/index.html" class="logo">LAPTECH</a>
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="header-top container">
+            <a href="/index.html" class="logo">LAPTECH</a>
 
-                <div class="search-bar">
-                    <input type="text" id="home-search-input" placeholder="Tìm kiếm sản phẩm...">
-                    <button type="button" id="home-search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="search-bar">
+                <input type="text" id="home-search-input" placeholder="Tìm kiếm sản phẩm...">
+                <button type="button" id="home-search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+
+            <div class="header-actions">
+                <div class="action-item">
+                    <i class="fa-regular fa-user"></i>
+                    <span class="auth-links" id="home-auth-links">
+                        <a href="/pages/LoginPage/register.html">ĐĂNG KÝ</a> | <a href="/pages/LoginPage">ĐĂNG
+                            NHẬP</a>
+                    </span>
                 </div>
-
-                <div class="header-actions">
-                    <div class="action-item">
-                        <i class="fa-regular fa-user"></i>
-                        <span class="auth-links" id="home-auth-links">
-                            <a href="/pages/LoginPage/register.html">ĐĂNG KÝ</a> | <a href="/pages/LoginPage">ĐĂNG
-                                NHẬP</a>
-                        </span>
-                    </div>
-                    <a href="/pages/CartPage/index.html" class="action-item" id="home-cart-btn" style="display: none;">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span>GIỎ HÀNG</span>
-                    </a>
-                </div>
+                <a href="/pages/CartPage/index.html" class="action-item" id="home-cart-btn" style="display: none;">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>GIỎ HÀNG</span>
+                </a>
             </div>
-
-            <nav class="main-nav">
-                <ul class="container">
-                    <li><a href="/index.html">DANH MỤC</a></li>
-                    <li><a href="/index.html">LAPTOP</a></li>
-                    <li><a href="/index.html">PHỤ KIỆN</a></li>
-                    <li><a href="/index.html">ƯU ĐÃI</a></li>
-                    <li><a href="/index.html">HỖ TRỢ</a></li>
-                </ul>
-            </nav>
-        </header>
-
-        <!-- BREADCRUMB -->
-        <section class="breadcrumb">
-
-            <i class="fa-solid fa-house"></i>
-
-            <p>
-                Trang chủ > Giỏ hàng > Lenovo simp3AZ > Xác nhận đơn hàng
-            </p>
-
-        </section>
-
-        <!-- ORDER INFO -->
-        <section class="order-info">
-
-            <h2>THÔNG TIN ĐẶT HÀNG</h2>
-
-            <div class="form-grid">
-
-                <!-- LEFT -->
-                <div class="left-form">
-
-                    <div class="form-group">
-                        <label>Họ tên người nhận</label>
-                        <input type="text" id="order-receiver-name" placeholder="Nhập họ tên người nhận hàng" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Số điện thoại</label>
-                        <input type="text" id="order-receiver-phone" placeholder="Nhập số điện thoại nhận hàng"
-                            required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tỉnh / Thành phố</label>
-
-                        <div class="select-box">
-                            <select id="order-city" required>
-                                <option value="">-- Chọn Tỉnh/Thành phố --</option>
-                                <option value="Hà Nội">Hà Nội</option>
-                                <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
-                                <option value="Đà Nẵng">Đà Nẵng</option>
-                                <option value="Hải Phòng">Hải Phòng</option>
-                                <option value="Cần Thơ">Cần Thơ</option>
-                                <option value="Bình Dương">Bình Dương</option>
-                                <option value="Đồng Nai">Đồng Nai</option>
-                                <option value="Khánh Hòa">Khánh Hòa</option>
-                                <option value="Lâm Đồng">Lâm Đồng</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Mã khuyến mãi</label>
-                        <div class="select-box">
-                            <select id="order-coupon-select">
-                                <option value="">-- Chọn mã khuyến mãi --</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Địa chỉ cụ thể (Số nhà, Đường/Thôn/Xóm, Phường/Xã, Quận/Huyện)</label>
-                        <input type="text" id="order-shipping-address" placeholder="Nhập địa chỉ giao hàng chi tiết"
-                            required>
-                    </div>
-
-                </div>
-
-                <!-- RIGHT -->
-                <div class="right-form">
-
-                    <div class="form-group">
-                        <label>Email khách hàng</label>
-                        <input type="email" id="order-email" readonly
-                            style="background-color: #f1f5f9; cursor: not-allowed;">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Mã giảm giá</label>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <input type="text" id="order-coupon-code" placeholder="Nhập mã giảm giá" />
-                            <button type="button" id="btn-apply-coupon"
-                                style="padding: 10px 16px; background: #a52424; color: #fff; border: none; border-radius: 6px; cursor: pointer;">Áp
-                                dụng</button>
-                        </div>
-                        <small id="coupon-message"
-                            style="display: block; margin-top: 8px; color: #1e3a8a; font-size: 14px;"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Phương thức thanh toán</label>
-
-                        <div class="payment-list">
-
-                            <label class="payment-item"
-                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <input type="radio" name="payment-method" value="COD" checked>
-                                <span>COD (Thanh toán khi nhận hàng)</span>
-                            </label>
-
-                            <label class="payment-item"
-                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <input type="radio" name="payment-method" value="CREDIT_CARD">
-                                <span>Thẻ tín dụng (Credit Card)</span>
-                            </label>
-
-                            <label class="payment-item" style="display: flex; align-items: center; gap: 8px;">
-                                <input type="radio" name="payment-method" value="INTERNET_BANKING">
-                                <span>Chuyển khoản (Internet Banking)</span>
-                            </label>
-
-                        </div>
-
-                    </div>
-
-                    <div class="form-group">
-                        <label>Ghi chú đơn hàng</label>
-                        <textarea id="order-note"
-                            placeholder="Nhập ghi chú giao hàng (ví dụ: giao giờ hành chính, gọi điện trước khi đến...)"></textarea>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- ORDER BOX -->
-        <section class="order-box">
-
-            <h2>ĐƠN HÀNG</h2>
-
-            <div id="checkout-products-list">
-                <!-- Tải động bằng JS -->
-            </div>
-
-            <div class="order-row" id="checkout-discount-row"
-                style="display: none; justify-content: space-between; margin-top: 8px; font-size: 16px; color: #1f2937;">
-                <span>Giảm giá</span>
-                <p id="checkout-discount-price">0₫</p>
-            </div>
-
-            <div class="order-row"
-                style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; font-weight: bold; font-size: 20px; color: #a52424;">
-                <span>TỔNG CỘNG</span>
-                <p id="checkout-total-price">0₫</p>
-            </div>
-
-        </section>
-
-        <!-- BUTTON -->
-        <div class="confirm-wrapper">
-            <button id="btn-confirm-order">XÁC NHẬN</button>
         </div>
 
-        <!-- FOOTER -->
-        <footer class="main-footer">
-            <div class="container footer-grid">
-                <div class="footer-col contact-info">
-                    <div class="footer-logo">LAPTECH</div>
-                    <ul>
-                        <li><i class="fa-solid fa-phone"></i> 0376.895.614 (chính)</li>
-                        <li><i class="fa-solid fa-phone"></i> 0436.395.614 (phụ)</li>
-                        <li><i class="fa-solid fa-envelope"></i> laptech123@gmail.com</li>
-                        <li><i class="fa-solid fa-location-dot"></i> Đường Nghiêm Xuân Yêm, Phường Đại Kim, Quận Hoàng
-                            Mai,
-                            TP.Hà Nội</li>
-                        <li><i class="fa-regular fa-clock"></i> Thứ 2 - CN: 8h00-24h00</li>
-                    </ul>
-                    <div class="social-icons">
-                        <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        <nav class="main-nav">
+            <ul class="container">
+                <li><a href="/index.html">DANH MỤC</a></li>
+                <li><a href="/index.html">LAPTOP</a></li>
+                <li><a href="/index.html">PHỤ KIỆN</a></li>
+                <li><a href="/index.html">ƯU ĐÃI</a></li>
+                <li><a href="/index.html">HỖ TRỢ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <section class="breadcrumb">
+
+        <i class="fa-solid fa-house"></i>
+
+        <p>
+            Trang chủ > Giỏ hàng > Lenovo simp3AZ > Xác nhận đơn hàng
+        </p>
+
+    </section>
+
+    <!-- ORDER INFO -->
+    <section class="order-info">
+
+        <h2>THÔNG TIN ĐẶT HÀNG</h2>
+
+        <div class="form-grid">
+
+            <!-- LEFT -->
+            <div class="left-form">
+
+                <div class="form-group">
+                    <label>Họ tên người nhận</label>
+                    <input type="text" id="order-receiver-name" placeholder="Nhập họ tên người nhận hàng" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input type="text" id="order-receiver-phone" placeholder="Nhập số điện thoại nhận hàng" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Tỉnh / Thành phố</label>
+
+                    <div class="select-box">
+                        <select id="order-city" required>
+                            <option value="">-- Chọn Tỉnh/Thành phố --</option>
+                            <option value="Hà Nội">Hà Nội</option>
+                            <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                            <option value="Đà Nẵng">Đà Nẵng</option>
+                            <option value="Hải Phòng">Hải Phòng</option>
+                            <option value="Cần Thơ">Cần Thơ</option>
+                            <option value="Bình Dương">Bình Dương</option>
+                            <option value="Đồng Nai">Đồng Nai</option>
+                            <option value="Khánh Hòa">Khánh Hòa</option>
+                            <option value="Lâm Đồng">Lâm Đồng</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="footer-col">
-                    <h3>DỊCH VỤ KHÁCH HÀNG</h3>
-                    <ul>
-                        <li><a href="#">Điều khoản và điều kiện</a></li>
-                        <li><a href="#">Chính sách hoàn tiền</a></li>
-                        <li><a href="#">Chính sách giao hàng</a></li>
-                        <li><a href="#">Chính sách quyền riêng tư</a></li>
-                        <li><a href="#">Hướng dẫn mua hàng</a></li>
-                    </ul>
+
+
+                <div class="form-group">
+                    <label>Địa chỉ cụ thể (Số nhà, Đường/Thôn/Xóm, Phường/Xã, Quận/Huyện)</label>
+                    <input type="text" id="order-shipping-address" placeholder="Nhập địa chỉ giao hàng chi tiết"
+                        required>
                 </div>
 
-                <div class="footer-col">
-                    <h3>CẨM NANG SỬ DỤNG</h3>
-                    <ul>
-                        <li><a href="#">Sử dụng & bảo quản laptop</a></li>
-                        <li><a href="#">Mẹo chọn máy</a></li>
-                        <li><a href="#">Hướng dẫn nhận hàng & đổi trả</a></li>
-                        <li><a href="#">Hướng dẫn sử dụng laptop</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                    </ul>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="right-form">
+
+                <div class="form-group">
+                    <label>Email khách hàng</label>
+                    <input type="email" id="order-email" readonly
+                        style="background-color: #f1f5f9; cursor: not-allowed;">
                 </div>
 
-                <div class="footer-col">
-                    <h3>THÔNG TIN CHUNG</h3>
-                    <ul>
-                        <li><a href="#">Tin về laptop</a></li>
-                        <li><a href="#">Quyền lợi thành viên</a></li>
-                        <li><a href="#">Ưu đãi khi đánh giá</a></li>
-                        <li><a href="#">Nhận quà tri ân</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                    </ul>
+                <div class="form-group">
+                    <label>Mã giảm giá</label>
+                    <div class="select-box">
+                        <select id="order-coupon-select">
+                            <option value="">-- Chọn mã giảm giá --</option>
+                        </select>
+                    </div>
+                    <small id="coupon-message"
+                        style="display: block; margin-top: 8px; color: #16a34a; font-size: 14px;"></small>
                 </div>
 
-                <div class="footer-col">
-                    <h3>Ý KIẾN ĐÓNG GÓP</h3>
-                    <p class="feedback-text">Laptech luôn mong nhận được ý kiến đóng góp từ bạn để nâng cấp dịch vụ và
-                        sản
-                        phẩm tốt hơn.</p>
-                    <p class="feedback-text">Nếu bạn có ý kiến, đừng ngần ngại đóng góp cho Laptech nhé.</p>
-                    <p class="feedback-text">Laptech xin cảm ơn!</p>
+                <div class="form-group">
+                    <label>Phương thức thanh toán</label>
+
+                    <div class="payment-list">
+
+                        <label class="payment-item"
+                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <input type="radio" name="payment-method" value="COD" checked>
+                            <span>COD (Thanh toán khi nhận hàng)</span>
+                        </label>
+
+                        <label class="payment-item"
+                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <input type="radio" name="payment-method" value="CREDIT_CARD">
+                            <span>Thẻ tín dụng (Credit Card)</span>
+                        </label>
+
+                        <label class="payment-item" style="display: flex; align-items: center; gap: 8px;">
+                            <input type="radio" name="payment-method" value="INTERNET_BANKING">
+                            <span>Chuyển khoản (Internet Banking)</span>
+                        </label>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Ghi chú đơn hàng</label>
+                    <textarea id="order-note"
+                        placeholder="Nhập ghi chú giao hàng (ví dụ: giao giờ hành chính, gọi điện trước khi đến...)"></textarea>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ORDER BOX -->
+    <section class="order-box">
+
+        <h2>ĐƠN HÀNG</h2>
+
+        <div id="checkout-products-list">
+            <!-- Tải động bằng JS -->
+        </div>
+
+        <div class="order-row" id="checkout-discount-row"
+            style="display: none; justify-content: space-between; margin-top: 8px; font-size: 16px; color: #1f2937;">
+            <span>Giảm giá</span>
+            <p id="checkout-discount-price">0₫</p>
+        </div>
+
+        <div class="order-row"
+            style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; font-weight: bold; font-size: 20px; color: #a52424;">
+            <span>TỔNG CỘNG</span>
+            <p id="checkout-total-price">0₫</p>
+        </div>
+
+    </section>
+
+    <!-- BUTTON -->
+    <div class="confirm-wrapper">
+        <button id="btn-confirm-order">XÁC NHẬN</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col contact-info">
+                <div class="footer-logo">LAPTECH</div>
+                <ul>
+                    <li><i class="fa-solid fa-phone"></i> 0376.895.614 (chính)</li>
+                    <li><i class="fa-solid fa-phone"></i> 0436.395.614 (phụ)</li>
+                    <li><i class="fa-solid fa-envelope"></i> laptech123@gmail.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Đường Nghiêm Xuân Yêm, Phường Đại Kim, Quận Hoàng
+                        Mai,
+                        TP.Hà Nội</li>
+                    <li><i class="fa-regular fa-clock"></i> Thứ 2 - CN: 8h00-24h00</li>
+                </ul>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
                 </div>
             </div>
-        </footer>
 
-        <script src="../../js/auth.js"></script>
-        <script src="order.js"></script>
-    </body>
+            <div class="footer-col">
+                <h3>DỊCH VỤ KHÁCH HÀNG</h3>
+                <ul>
+                    <li><a href="#">Điều khoản và điều kiện</a></li>
+                    <li><a href="#">Chính sách hoàn tiền</a></li>
+                    <li><a href="#">Chính sách giao hàng</a></li>
+                    <li><a href="#">Chính sách quyền riêng tư</a></li>
+                    <li><a href="#">Hướng dẫn mua hàng</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>CẨM NANG SỬ DỤNG</h3>
+                <ul>
+                    <li><a href="#">Sử dụng & bảo quản laptop</a></li>
+                    <li><a href="#">Mẹo chọn máy</a></li>
+                    <li><a href="#">Hướng dẫn nhận hàng & đổi trả</a></li>
+                    <li><a href="#">Hướng dẫn sử dụng laptop</a></li>
+                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>THÔNG TIN CHUNG</h3>
+                <ul>
+                    <li><a href="#">Tin về laptop</a></li>
+                    <li><a href="#">Quyền lợi thành viên</a></li>
+                    <li><a href="#">Ưu đãi khi đánh giá</a></li>
+                    <li><a href="#">Nhận quà tri ân</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Ý KIẾN ĐÓNG GÓP</h3>
+                <p class="feedback-text">Laptech luôn mong nhận được ý kiến đóng góp từ bạn để nâng cấp dịch vụ và
+                    sản
+                    phẩm tốt hơn.</p>
+                <p class="feedback-text">Nếu bạn có ý kiến, đừng ngần ngại đóng góp cho Laptech nhé.</p>
+                <p class="feedback-text">Laptech xin cảm ơn!</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../js/auth.js"></script>
+    <script src="order.js"></script>
+</body>
+
+</html>
 
 </html>

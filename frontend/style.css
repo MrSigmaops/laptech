@@ -1236,3 +1236,24 @@ body {
     margin-bottom: 8px;
     font-size: 14px;
 }
+
+/* --- Customer Reviews Responsive & Interactive Styles --- */
+@media screen and (max-width: 768px) {
+    .reviews-container {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+}
+
+.reviews-stats #average-stars i {
+    color: #fbbf24;
+}
+
+#review-form textarea:focus {
+    border-color: #ff8000 !important;
+    box-shadow: 0 0 0 2px rgba(255, 128, 0, 0.1);
+}
+
+.rating-stars-input i:hover {
+    transform: scale(1.15);
+}

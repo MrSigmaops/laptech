@@ -81,16 +81,26 @@ function renderOrders(orders) {
         // Tạo danh sách sản phẩm hiển thị trong card
         const itemsHtml = order.products.map(item => {
             const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price);
+            const showReviewLink = order.status === 'CONFIRMED';
+            const reviewLinkHtml = showReviewLink
+                ? `<a href="/detailProduct.html?id=${item.productId}#write-review-container" style="display: inline-block; margin-top: 8px; font-size: 13px; color: #ff8000; font-weight: bold; text-decoration: none;"><i class="fa-solid fa-star" style="margin-right: 4px;"></i> Viết đánh giá</a>`
+                : '';
+
             return `
-                <div class="order-item-row">
-                    <div class="item-info">
-                        <img src="${item.imageUrl}" alt="${item.name}">
+                <div class="order-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                    <div class="item-info" style="display: flex; gap: 12px; align-items: center;">
+                        <a href="/detailProduct.html?id=${item.productId}">
+                            <img src="${item.imageUrl}" alt="${item.name}" style="width: 60px; height: 50px; object-fit: cover; border-radius: 6px;">
+                        </a>
                         <div class="item-detail">
-                            <h4>${item.name}</h4>
-                            <p>Số lượng: ${item.quantity} x ${formattedPrice}</p>
+                            <h4 style="margin: 0; font-size: 15px; font-weight: 600;">
+                                <a href="/detailProduct.html?id=${item.productId}" style="color: #1e293b; text-decoration: none;">${item.name}</a>
+                            </h4>
+                            <p style="margin: 4px 0 0; font-size: 13px; color: #64748b;">Số lượng: ${item.quantity} x ${formattedPrice}</p>
+                            ${reviewLinkHtml}
                         </div>
                     </div>
-                    <div class="item-price">
+                    <div class="item-price" style="font-weight: 600; color: #475569;">
                         ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price * item.quantity)}
                     </div>
                 </div>

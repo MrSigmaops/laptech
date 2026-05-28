@@ -38,9 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const couponSelect = document.getElementById('order-coupon-select');
     if (couponSelect) {
         couponSelect.addEventListener('change', () => {
-            const selectedCode = couponSelect.value;
-            const couponInput = document.getElementById('order-coupon-code');
-            if (couponInput) couponInput.value = selectedCode;
             applyCoupon(checkoutItems);
         });
     }
@@ -49,13 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnConfirm) {
         btnConfirm.addEventListener('click', () => {
             submitOrder(checkoutItems);
-        });
-    }
-
-    const btnApplyCoupon = document.getElementById('btn-apply-coupon');
-    if (btnApplyCoupon) {
-        btnApplyCoupon.addEventListener('click', () => {
-            applyCoupon(checkoutItems);
         });
     }
 });
@@ -155,14 +145,16 @@ function renderCheckoutItems(items) {
 }
 
 async function applyCoupon(items) {
-    const couponCode = document.getElementById('order-coupon-code')?.value.trim();
+    const couponSelect = document.getElementById('order-coupon-select');
+    const couponCode = couponSelect ? couponSelect.value.trim() : '';
     const messageEl = document.getElementById('coupon-message');
 
+    // Nếu không chọn mã → reset giảm giá
     if (!couponCode) {
-        if (messageEl) {
-            messageEl.innerText = 'Vui lòng nhập mã giảm giá.';
-            messageEl.style.color = '#dc2626';
-        }
+        currentCoupon = null;
+        currentDiscount = 0;
+        if (messageEl) messageEl.innerText = '';
+        renderCheckoutItems(items);
         return;
     }
 
@@ -183,8 +175,8 @@ async function applyCoupon(items) {
         currentCoupon = data.coupon;
         currentDiscount = data.discountAmount || 0;
         if (messageEl) {
-            messageEl.innerText = `Áp dụng mã thành công: -${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(currentDiscount)}`;
-            messageEl.style.color = '#1e3a8a';
+            messageEl.innerText = `✓ Áp dụng mã thành công! Tiết kiệm ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(currentDiscount)}`;
+            messageEl.style.color = '#16a34a';
         }
 
         renderCheckoutItems(items);
@@ -204,7 +196,8 @@ async function submitOrder(checkoutItems) {
     const city = document.getElementById('order-city').value;
     const shippingAddress = document.getElementById('order-shipping-address').value.trim();
     const note = document.getElementById('order-note').value.trim();
-    const couponCode = currentCoupon?.code || '';
+    const couponSelect = document.getElementById('order-coupon-select');
+    const couponCode = currentCoupon?.code || couponSelect?.value?.trim() || '';
 
     const paymentRadio = document.querySelector('input[name="payment-method"]:checked');
     const paymentMethod = paymentRadio ? paymentRadio.value : 'COD';
